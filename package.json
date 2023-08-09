@@ -7,9 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prisma": "prisma init --datasource-provider",
+    "migrate": "prisma migrate dev --name init"
   },
   "dependencies": {
+    "@prisma/client": "^5.1.1",
     "@types/node": "20.4.9",
     "@types/react": "18.2.19",
     "@types/react-dom": "18.2.7",
@@ -25,6 +28,7 @@
   },
   "devDependencies": {
     "husky": "^8.0.3",
-    "lint-staged": "^13.2.3"
+    "lint-staged": "^13.2.3",
+    "prisma": "^5.1.1"
   }
 }
