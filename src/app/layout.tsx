@@ -22,10 +22,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <Navbar />
-          <TicketDetails title={"Ticket 1"} description={"This is a description"} expiry={"20/14/23"} />
-          {/* <main className='flex h-content'>
+          {/* <TicketDetails title={"Ticket 1"} description={"This is a description"} expiry={"20/14/23"} /> */}
+          <main className='flex h-content'>
             {children}
-          </main> */}
+          </main>
         </AuthProvider>
       </body>
     </html>

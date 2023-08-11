@@ -3,7 +3,7 @@ export const initialData = {
     create: [
       {
         title: 'Board 1',
-        tickets: {
+        categories: {
           create: [
             {title: "To Do"},
             {title: "Doing"},
