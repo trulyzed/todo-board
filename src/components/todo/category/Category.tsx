@@ -2,7 +2,7 @@ import { FC } from "react"
 import { Ticket } from "@/components/todo/ticket/Ticket"
 
 type CategoryProps = {
-  title: String
+  title: string
 }
 
 export const Category:FC<CategoryProps> = ({
