@@ -22,5 +22,5 @@ export async function GET(request: Request) {
       categories: true
     }
   })
-  return NextResponse.json({ data })
+  return NextResponse.json(data)
 }
