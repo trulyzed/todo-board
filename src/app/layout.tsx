@@ -21,7 +21,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <Navbar />
-          {children}
+          <main className='flex h-content'>
+            {children}
+          </main>
         </AuthProvider>
       </body>
     </html>
