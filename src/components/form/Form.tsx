@@ -1,28 +1,31 @@
 'use client'
 
-import { ChangeEvent, FC, FormEvent, useCallback, useEffect, useState } from "react"
+import { ChangeEvent, FC, FormEvent, useCallback, useEffect, useRef, useState } from "react"
 import { Field, FormProps } from "./types"
 
 export const Form:FC<FormProps> = ({fields, defaultValues, onSubmit, onSaveDraft}) => {
   const [formValues, setFormValues] = useState(defaultValues)
+  const hasChangedRef = useRef(false)
 
   const handleChange = useCallback((id: Field['id']) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormValues(prevValue => ({
       ...prevValue,
       [id]: e.target.value
     }))
+    hasChangedRef.current = true
   }, [])
 
-  const handleSubmit = useCallback((e: FormEvent) => {
+  const handleSubmit = useCallback(async (e: FormEvent) => {
     e.preventDefault()
-    onSubmit(formValues)
+    const submitted = await onSubmit(formValues)
+    if (submitted) hasChangedRef.current = false
   }, [formValues, onSubmit])
 
-  // Save as draft before unload
+  // Save as draft before unload if values are changed
   useEffect(() => {
     if (!onSaveDraft) return
     const handleBeforeUnload = () => {
-      onSaveDraft(formValues)
+      if (hasChangedRef.current) onSaveDraft(formValues)
     }
 
     window.addEventListener('beforeunload', handleBeforeUnload)

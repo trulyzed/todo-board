@@ -16,6 +16,6 @@ export type FormValue = {
 export type FormProps = {
   fields: Field[]
   defaultValues?: FormValue
-  onSubmit: (values?: FormValue) => void
+  onSubmit: (values?: FormValue) => Promise<boolean>
   onSaveDraft?: (values?: FormValue) => void
 }

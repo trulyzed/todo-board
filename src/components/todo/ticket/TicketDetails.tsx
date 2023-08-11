@@ -14,8 +14,8 @@ type TicketDetailsProps = {
 export const TicketDetails:FC<TicketDetailsProps> = ({
   title
 }) => {
-  const handleSubmit: FormProps['onSubmit'] = useCallback((values) => {
-    console.log(values)
+  const handleSubmit: FormProps['onSubmit'] = useCallback(async (values) => {
+    return Promise.resolve(true) 
   }, [])
 
   const handleSaveDraft: Required<FormProps>['onSaveDraft'] = useCallback((values) => {
@@ -42,7 +42,9 @@ export const TicketDetails:FC<TicketDetailsProps> = ({
   ]
   return (
     <div className="rounded-lg bg-zinc-700 p-4">
-      <Form fields={fields} onSubmit={handleSubmit} onSaveDraft={handleSaveDraft} />
+      <Form fields={fields} onSubmit={handleSubmit} onSaveDraft={handleSaveDraft} defaultValues={{
+        title: 'Title 1'
+      }} />
     </div>
   )
 }
