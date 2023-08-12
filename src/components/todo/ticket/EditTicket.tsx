@@ -2,10 +2,11 @@
 
 import { editTicket } from "@/queries/client/ticket"
 import { FC, useCallback, useTransition } from "react"
-import { InlineForm, InlineFormProps } from "@/components/form/inline/InlineForm"
+import { InlineForm } from "@/components/form/inline/InlineForm"
 import { useRouter } from "next/navigation"
 import { Pencil } from "@phosphor-icons/react"
 import { appendNewClasses } from "@/lib/utils/classNameUtils"
+import { InlineFormProps } from "@/components/form/inline/types"
 
 type EditTicketProps = {
   defaultValue: string

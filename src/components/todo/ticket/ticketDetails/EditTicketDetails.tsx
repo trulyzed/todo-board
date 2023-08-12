@@ -1,10 +1,11 @@
 'use client'
 
 import { FC, useMemo } from "react"
-import { InlineForm, InlineFormProps } from "@/components/form/inline/InlineForm"
+import { InlineForm } from "@/components/form/inline/InlineForm"
 import { editTicket } from "@/queries/client/ticket"
-import { Subtitles, Article, Calendar } from "@phosphor-icons/react"
+import { Subtitles, Article } from "@phosphor-icons/react"
 import { TicketField } from "./TicketField"
+import { InlineFormProps } from "@/components/form/inline/types"
 
 type EditTicketDetailsProps = {
   id: string
@@ -25,7 +26,7 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
       fieldId: "title",
       refId: id,
       query: editTicket,
-      render: (props) => <TicketField {...props} value={title} icon={<Subtitles weight="bold" />} />,
+      render: (renderProps) => <TicketField {...renderProps} value={title} icon={<Subtitles weight="bold" />} />,
       defaultValue: title,
       onSuccess: onSuccess
     },
@@ -33,7 +34,7 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
       fieldId: "description",
       refId: id,
       query: editTicket,
-      render: (props) => <TicketField {...props} value={description} icon={<Article weight="bold" />} />,
+      render: (renderProps) => <TicketField {...renderProps} value={description} icon={<Article weight="bold" />} />,
       defaultValue: description,
       onSuccess: onSuccess
     },

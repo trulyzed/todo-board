@@ -7,27 +7,8 @@ import { appendNewClasses } from "@/lib/utils/classNameUtils"
 import { CancelAction } from "./CancelAction"
 import { useDetectOutsideClick } from "@/hooks/useDetectOutsideClick"
 import { useDetectKeyPress } from "@/hooks/useDetectKeyPress"
+import { InlineFormProps, RenderProps } from "./types"
 
-type RenderProps = {
-  onClick: (e: any) => void,
-  className: string
-}
-
-export type InlineFormProps = {
-  className?: string
-  defaultValue?: string
-  refId?: string
-  render: (props: RenderProps) => ReactNode
-  query: (payload: any) => Promise<any>
-  queryParams?: any
-  fieldId: string
-  required?: Field['required']
-  inputType?: Field['inputType']
-  onSuccess?: (resp: any) => void
-  clearOnSuccess?: boolean
-  onToggle?: (status: boolean) => void
-  clickEventHandler?: (event: Event) => void
-}
 
 export const InlineForm:FC<InlineFormProps> = ({
   className='',

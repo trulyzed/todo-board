@@ -1,20 +1,23 @@
-import { ReactNode, forwardRef } from "react"
+import { RenderProps } from "@/components/form/inline/types"
+import { appendNewClasses } from "@/lib/utils/classNameUtils"
+import { FC, ReactNode } from "react"
 
 type TicketFieldProps = {
   value: ReactNode
   icon: ReactNode
-}
+} & RenderProps
 
-export const TicketField = forwardRef<HTMLDivElement, TicketFieldProps>(({
+export const TicketField:FC<TicketFieldProps> = ({
   value,
-  icon
-}, ref) => {
+  icon,
+  ...otherProps
+}) => {
   return (
-    <div ref={ref} className="flex items-center gap-2">
+    <div {...otherProps} className={appendNewClasses("flex items-center gap-2", [otherProps.className])}>
       {icon}
       {value}
     </div>
   )
-})
+}
 
 TicketField.displayName = "TicketField"
