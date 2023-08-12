@@ -3,7 +3,7 @@
 import { FC, useMemo } from "react"
 import { InlineForm } from "@/components/form/inline/InlineForm"
 import { editTicket } from "@/queries/client/ticket"
-import { Subtitles, Article } from "@phosphor-icons/react"
+import { Subtitles, Article, Calendar } from "@phosphor-icons/react"
 import { TicketField } from "./TicketField"
 import { InlineFormProps } from "@/components/form/inline/types"
 
@@ -19,6 +19,7 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
   id,
   title,
   description,
+  expiresAt,
   onSuccess,
 }) => {
   const fields = useMemo<InlineFormProps[]>(() => ([
@@ -34,12 +35,22 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
     {
       fieldId: "description",
       refId: id,
+      inputType: "TextArea",
       query: editTicket,
       render: (renderProps) => <TicketField {...renderProps} value={description} icon={<Article weight="bold" />} />,
       defaultValue: description,
       onSuccess: onSuccess
     },
-  ]), [onSuccess, id, title, description])
+    {
+      fieldId: "expiresAt",
+      refId: id,
+      inputType: "DateTime",
+      query: editTicket,
+      render: (renderProps) => <TicketField {...renderProps} value={expiresAt} icon={<Calendar weight="bold" />} />,
+      defaultValue: expiresAt,
+      onSuccess: onSuccess
+    },
+  ]), [onSuccess, id, title, description, expiresAt])
 
   return (
     <div className="flex flex-col gap-3">

@@ -22,5 +22,5 @@ export type FormProps = {
   submitLabel?: string
   actions?: ReactNode
   clearOnSuccess?: boolean
-  autofocusField?: string
+  autofocusField?: Field['id']
 }

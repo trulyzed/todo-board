@@ -2,6 +2,9 @@
 
 import { ChangeEvent, FormEvent, forwardRef, useCallback, useEffect, useRef, useState } from "react"
 import { Field, FormProps } from "./types"
+import { TextInput } from "./input/TextInput"
+import { DateInput } from "./input/DateInput"
+import { TextAreaInput } from "./input/TextAreaInput"
 
 export const Form = forwardRef<HTMLFormElement, FormProps>(({
   className,
@@ -17,10 +20,10 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({
   const [formValues, setFormValues] = useState(defaultValues)
   const hasChangedRef = useRef(false)
 
-  const handleChange = useCallback((id: Field['id']) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = useCallback((id: Field['id']) => (value: string) => {
     setFormValues(prevValue => ({
       ...prevValue,
-      [id]: e.target.value
+      [id]: value
     }))
     hasChangedRef.current = true
   }, [])
@@ -51,25 +54,32 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({
         <div key={i.id} className="flex gap-2">
           {i.label ? <label className="shrink-0" htmlFor={i.id}>{i.label}</label> : null}
           {i.inputType === "TextArea" ?
-            <textarea
-              className="w-full rounded"
-              name={i.id}
-              placeholder={i.placeholder}
+            <TextAreaInput
+              id={i.id}
+              className="w-full rounded p-2"
               value={formValues?.[i.id] || ""}
               onChange={handleChange(i.id)}
               required={i.required}
-              rows={10}
+              placeholder={i.placeholder}
               autoFocus={autofocusField === i.id}
             />
-            : <input
+            : i.inputType === "DateTime" ?
+              <DateInput
+                id={i.id}
                 className="w-full rounded p-2"
-                name={i.id}
-                type="text"
-                placeholder={i.placeholder || (i.inputType === "DateTime" ? "Date format DD/MM/YYYY HH:MM" : undefined)}
                 value={formValues?.[i.id] || ""}
                 onChange={handleChange(i.id)}
-                pattern={i.inputType === "DateTime" ? "[0-9]{1,2}/[0-9]{1,2}/[0-9]{4} [0-9]{1,2}:[0-9]{1,2}" : undefined}
                 required={i.required}
+                placeholder={i.placeholder}
+                autoFocus={autofocusField === i.id}
+              />
+            : <TextInput
+                id={i.id}
+                className="w-full rounded p-2"
+                value={formValues?.[i.id] || ""}
+                onChange={handleChange(i.id)}
+                required={i.required}
+                placeholder={i.placeholder}
                 autoFocus={autofocusField === i.id}
               />
           }
