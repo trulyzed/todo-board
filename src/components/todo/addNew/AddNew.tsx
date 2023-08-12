@@ -44,10 +44,17 @@ export const AddNew:FC<AddNewProps> = ({
       {title}
     </button>
   ) : (
-    <Form className="shrink-0" fields={fields} onSubmit={handleSubmit} submitLabel="Add" actions={[
-      <button key={"cancel"} className={`rounded bg-red-500 px-2 py-1 text-white ${className} flex items-center gap-2`} onClick={handleToggleInput}>
-        Cancel
-      </button>
-    ]} clearOnSubmit />
+    <Form
+      className="shrink-0"
+      fields={fields}
+      onSubmit={handleSubmit}
+      submitLabel="Add"
+      actions={[
+        <button key={"cancel"} className={`rounded bg-red-500 px-2 py-1 text-white ${className} flex items-center gap-2`} onClick={handleToggleInput}>
+          Cancel
+        </button>
+      ]}
+      clearOnSubmit
+    />
   )
 }

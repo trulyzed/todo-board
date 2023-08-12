@@ -24,3 +24,28 @@ export async function POST(request: Request) {
   })
   return NextResponse.json(data)
 }
+
+export async function PATCH(request: Request) {
+  const { title, id }: { title: string; id: string } = await request.json()
+  const { user, error } = await getUser()
+  if (error) return error
+
+  const board = await prisma.board.findFirst({
+    where: {
+      userId: user?.id
+    }
+  })
+
+  if (!board) return new Response("Board not found", {status: 404})
+  else if (!title) return new Response("Bad data", {status: 400})
+
+  const data = await prisma.category.update({
+    where: {
+      id,
+    },
+    data: {
+      title,
+    }
+  })
+  return NextResponse.json(data)
+}
