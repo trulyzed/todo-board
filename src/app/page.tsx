@@ -4,6 +4,7 @@ import { getCategories } from "@/queries/server/category"
 
 type Category = {
   title: string
+  id: string
 }
 
 export default async function Page() {

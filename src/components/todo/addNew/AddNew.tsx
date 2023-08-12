@@ -54,7 +54,7 @@ export const AddNew:FC<AddNewProps> = ({
           Cancel
         </button>
       ]}
-      clearOnSubmit
+      clearOnSuccess
     />
   )
 }

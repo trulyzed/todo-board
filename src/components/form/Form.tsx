@@ -3,7 +3,7 @@
 import { ChangeEvent, FC, FormEvent, useCallback, useEffect, useRef, useState } from "react"
 import { Field, FormProps } from "./types"
 
-export const Form:FC<FormProps> = ({className, fields, defaultValues, onSubmit, onSaveDraft, submitLabel="Save", actions, clearOnSubmit}) => {
+export const Form:FC<FormProps> = ({className, fields, defaultValues, onSubmit, onSaveDraft, submitLabel="Save", actions, clearOnSuccess}) => {
   const [formValues, setFormValues] = useState(defaultValues)
   const hasChangedRef = useRef(false)
 
@@ -19,8 +19,8 @@ export const Form:FC<FormProps> = ({className, fields, defaultValues, onSubmit, 
     e.preventDefault()
     const submitted = await onSubmit(formValues)
     if (submitted) hasChangedRef.current = false
-    if (clearOnSubmit) setFormValues(undefined)
-  }, [formValues, onSubmit, clearOnSubmit])
+    if (clearOnSuccess) setFormValues(undefined)
+  }, [formValues, onSubmit, clearOnSuccess])
 
   // Save as draft before unload if values are changed
   useEffect(() => {

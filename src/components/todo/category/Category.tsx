@@ -19,7 +19,7 @@ export const Category:FC<CategoryProps> = ({
   return (
     <div className="flex flex-col rounded-xl p-2 bg-zinc-900 max-h-full">
       <div className="p-2">
-        <EditCategory id={id} title={title} />
+        <EditCategory refId={id} defaultValue={title} />
       </div>
       <div className="flex flex-col p-1 mt-1 gap-2 overflow-y-auto max-h-full">
         {tickets.map((i, index) => <Ticket key={index} {...i} />)}

@@ -21,5 +21,5 @@ export type FormProps = {
   onSaveDraft?: (values?: FormValue) => void
   submitLabel?: string
   actions?: ReactNode
-  clearOnSubmit?: boolean
+  clearOnSuccess?: boolean
 }

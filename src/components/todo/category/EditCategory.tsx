@@ -1,16 +1,39 @@
 'use client'
 
 import { editCategory } from "@/queries/client/category"
-import { EditableText } from "@/components/todo/edit/EditableText"
-import { FC } from "react"
+import { FC, useCallback, useTransition } from "react"
+import { InlineForm } from "@/components/form/inline/InlineForm"
+import { useRouter } from "next/navigation"
 
 type EditCategoryProps = {
-  title: string
-  id: string
+  defaultValue: string
+  refId: string
 }
 
 export const EditCategory:FC<EditCategoryProps> = ({
-  title, id
+  defaultValue,
+  refId
 }) => {
-  return <EditableText text={title} id={id} query={editCategory} payloadIndex="title" elementType="h4" className={"font-bold text-slate-50"} />
+  const router = useRouter()
+  const [isPendingTransition, startTransition] = useTransition()
+
+  const handleSuccessfulEdit = useCallback(() => {
+    startTransition(() => {
+      router.refresh()
+    })
+  }, [router])
+
+  return (
+    <InlineForm
+      className=''
+      defaultValue={defaultValue}
+      refId={refId}
+      query={editCategory}
+      fieldId={'title'}
+      required
+      onSuccess={handleSuccessfulEdit}
+    >
+      <h4 className="font-bold text-slate-50">{defaultValue}</h4>
+    </InlineForm>
+  )
 }
