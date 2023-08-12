@@ -5,7 +5,9 @@ export const createCategory = async (payload: any) => {
 
   try {
     return JSON.parse(data || null)
-  } catch (error) {}
+  } catch (error) {
+    throw error
+  }
 }
 
 export const editCategory = async (payload: any) => {
@@ -13,5 +15,7 @@ export const editCategory = async (payload: any) => {
 
   try {
     return JSON.parse(data || null)
-  } catch (error) {}
+  } catch (error) {
+    throw error
+  }
 }

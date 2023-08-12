@@ -3,23 +3,27 @@ import { prisma } from "@/lib/database/prisma"
 import { getUser } from "@/lib/api/query/getUser"
 
 export async function POST(request: Request) {
-  const { title }: { title: string } = await request.json()
+  const { title, categoryId }: { title: string; categoryId: string } = await request.json()
   const { user, error } = await getUser()
   if (error) return error
 
-  const board = await prisma.board.findFirst({
+  const category = await prisma.category.findUnique({
     where: {
-      userId: user?.id
+      board: {
+        userId: user!.id
+      },
+      id: categoryId
     }
   })
 
-  if (!board) return new Response("Board not found", {status: 404})
+  if (!categoryId || !category) return new Response("Category not found", {status: 404})
   else if (!title) return new Response("Bad data", {status: 400})
 
-  const data = await prisma.category.create({
+
+  const data = await prisma.ticket.create({
     data: {
       title,
-      boardId: board?.id
+      categoryId
     }
   })
   return NextResponse.json(data)
@@ -30,18 +34,16 @@ export async function PATCH(request: Request) {
   const { user, error } = await getUser()
   if (error) return error
 
-  const board = await prisma.board.findFirst({
-    where: {
-      userId: user?.id
-    }
-  })
+  if (!title) return new Response("Bad data", {status: 400})
 
-  if (!board) return new Response("Board not found", {status: 404})
-  else if (!title) return new Response("Bad data", {status: 400})
-
-  const data = await prisma.category.update({
+  const data = await prisma.ticket.update({
     where: {
       id,
+      category: {
+        board: {
+          userId: user?.id
+        }
+      }
     },
     data: {
       title,

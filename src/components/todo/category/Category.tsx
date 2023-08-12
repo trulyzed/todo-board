@@ -15,38 +15,9 @@ type CategoryProps = {
 export const Category:FC<CategoryProps> = ({
   id,
   title,
-  // tickets=[],
+  tickets=[],
 }) => {
   const ticketsContainerRef = useRef<HTMLDivElement>(null)
-  const tickets = [
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-    {title: "Ticket 1"},
-  ]
 
   const handleSuccessCreate = useCallback(() => {
     ticketsContainerRef.current?.scrollTo(0, ticketsContainerRef.current.scrollHeight)
@@ -60,7 +31,7 @@ export const Category:FC<CategoryProps> = ({
       <div ref={ticketsContainerRef} className="flex flex-col p-1 mt-1 gap-2 overflow-y-auto max-h-full mb-2">
         {tickets.map((i, index) => <Ticket key={index} {...i} />)}
       </div>
-      <AddTicket onSuccess={handleSuccessCreate} />
+      <AddTicket onSuccess={handleSuccessCreate} refId={id} />
     </div>
   )
 }

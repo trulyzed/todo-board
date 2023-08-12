@@ -7,5 +7,7 @@ export const getCategories = async () => {
   try {
     const [board] = JSON.parse(data || null)
     return board.categories
-  } catch (error) {}
+  } catch (error) {
+    throw error
+  }
 }

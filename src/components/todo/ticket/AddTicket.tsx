@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useCallback, useTransition } from "react"
+import { FC, useCallback, useMemo, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { createTicket } from "@/queries/client/ticket"
 import { InlineForm } from "@/components/form/inline/InlineForm"
@@ -8,13 +8,17 @@ import { Plus } from "@phosphor-icons/react"
 
 type AddTicketProps = {
   onSuccess?: () => void
+  refId: string
 }
 
 export const AddTicket:FC<AddTicketProps> = ({
-  onSuccess
+  onSuccess,
+  refId,
 }) => {
   const router = useRouter()
   const [isPendingTransition, startTransition] = useTransition()
+
+  const queryParams = useMemo(() => ({categoryId: refId}), [refId])
 
   const handleSuccessfulCreate = useCallback(() => {
     startTransition(() => {
@@ -27,6 +31,7 @@ export const AddTicket:FC<AddTicketProps> = ({
     <InlineForm
       className={''}
       query={createTicket}
+      queryParams={queryParams}
       fieldId={'title'}
       required
       onSuccess={handleSuccessfulCreate}

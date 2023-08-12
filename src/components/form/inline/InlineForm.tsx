@@ -12,6 +12,7 @@ type InlineFormProps = {
   defaultValue?: string
   refId?: string
   query: (payload: any) => Promise<any>
+  queryParams?: any
   fieldId: string
   required?: Field['required']
   inputType?: Field['inputType']
@@ -20,7 +21,7 @@ type InlineFormProps = {
 }
 
 export const InlineForm:FC<InlineFormProps> = ({
-  className='', children, defaultValue, refId, query, fieldId, required=false, inputType="Text", onSuccess, clearOnSuccess
+  className='', children, defaultValue, refId, query, queryParams, fieldId, required=false, inputType="Text", onSuccess, clearOnSuccess
 }) => {
   const [showInput, setShowInput] = useState(false)
   const [processing, setProcessing] = useState(false)
@@ -46,14 +47,15 @@ export const InlineForm:FC<InlineFormProps> = ({
     setProcessing(true)
     query({
       ...values,
-      ...refId && {id: refId}
+      ...refId && {id: refId},
+      ...queryParams
     }).then((resp) => {
       onSuccess?.(resp)
       setShowInput(false)
     }).finally(() => {
       setProcessing(false)
     })
-  }, [processing, query, refId, onSuccess])
+  }, [processing, query, queryParams, refId, onSuccess])
 
   return !showInput ? clickableChildren : (
     <Form
