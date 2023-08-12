@@ -2,6 +2,28 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/database/prisma"
 import { getUser } from "@/lib/api/query/getUser"
 
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url)
+  const ticketId = searchParams.get('ticketId')
+  if (!ticketId) return new Response("No ticket Id found", {status: 400})
+
+  const { user, error } = await getUser()
+  if (error) return error
+
+  const data = await prisma.ticket.findUnique({
+    where: {
+      category: {
+        board: {
+          userId: user!.id
+        }
+      },
+      id: ticketId
+    },
+  })
+  return NextResponse.json(data)
+}
+
+
 export async function POST(request: Request) {
   const { title, categoryId }: { title: string; categoryId: string } = await request.json()
   const { user, error } = await getUser()

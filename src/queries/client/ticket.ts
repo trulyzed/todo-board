@@ -1,5 +1,19 @@
 import { apiClient } from "@/lib/api/apiClient"
 
+export const getTicket = async (payload: any) => {
+  const { data } = await apiClient(undefined, true).get(`/ticket`, {
+    params: {
+      ticketId: payload.id
+    }
+  })
+
+  try {
+    return JSON.parse(data || null)
+  } catch (error) {
+    throw error
+  }
+}
+
 export const createTicket = async (payload: any) => {
   const { data } = await apiClient(undefined, true).post('/ticket', JSON.stringify(payload))
 

@@ -2,6 +2,7 @@
 
 import { FC, MouseEventHandler, useCallback, useState } from "react"
 import { EditTicket } from "./EditTicket"
+import { TicketDetails } from "./ticketDetails/TicketDetails"
 
 type TicketProps = {
   title: string
@@ -19,10 +20,12 @@ export const Ticket:FC<TicketProps> = ({
     setShowDetails(true)
   }, [isEditing])
 
-  return (
-    <div className="rounded-lg bg-zinc-700 flex items-center justify-between p-2 group relative cursor-pointer" onClick={handleClick}>
-      {!isEditing ? <p className="text-white select-none">{title}</p> : null}
-      <EditTicket refId={id} defaultValue={title} onToggle={setIsEditing} />
-    </div>
-  )
+  return showDetails ?
+    <TicketDetails id={id} title={title} />
+    : (
+      <div className="rounded-lg bg-zinc-700 flex items-center justify-between p-2 group relative cursor-pointer" onClick={handleClick}>
+        {!isEditing ? <p className="text-white select-none">{title}</p> : null}
+        <EditTicket refId={id} defaultValue={title} onToggle={setIsEditing} />
+      </div>
+    )
 }

@@ -1,9 +1,8 @@
-import { AuthProvider } from '@/context/AuthProvider'
 import './globals.css'
+import { AuthProvider } from '@/context/AuthProvider'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Navbar } from '@/components/layout/navbar/Navbar'
-import { TicketDetails } from '@/components/todo/ticket/TicketDetails'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,7 +21,6 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <Navbar />
-          {/* <TicketDetails title={"Ticket 1"} description={"This is a description"} expiry={"20/14/23"} /> */}
           <main className='flex h-content'>
             {children}
           </main>
