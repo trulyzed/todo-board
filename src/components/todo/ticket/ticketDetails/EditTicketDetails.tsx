@@ -25,6 +25,7 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
     {
       fieldId: "title",
       refId: id,
+      required: true,
       query: editTicket,
       render: (renderProps) => <TicketField {...renderProps} value={title} icon={<Subtitles weight="bold" />} />,
       defaultValue: title,

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/database/prisma"
 import { getUser } from "@/lib/api/query/getUser"
+import { Ticket } from "@prisma/client"
+import { getJSONableError } from "@/lib/api/utils"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -25,9 +27,13 @@ export async function GET(request: Request) {
 
 
 export async function POST(request: Request) {
-  const { title, categoryId }: { title: string; categoryId: string } = await request.json()
+  const { title, categoryId }: Ticket = await request.json()
   const { user, error } = await getUser()
   if (error) return error
+  const data: Partial<Ticket> = {
+    title,
+  }
+  if ((data.title !== undefined) && !data.title) return new Response(getJSONableError("Title is required"), {status: 400})
 
   const category = await prisma.category.findUnique({
     where: {
@@ -38,27 +44,31 @@ export async function POST(request: Request) {
     }
   })
 
-  if (!categoryId || !category) return new Response("Category not found", {status: 404})
+  if (!categoryId || !category) return new Response(getJSONableError("Category not found"), {status: 404})
   else if (!title) return new Response("Bad data", {status: 400})
 
 
-  const data = await prisma.ticket.create({
+  const ticket = await prisma.ticket.create({
     data: {
       title,
       categoryId
     }
   })
-  return NextResponse.json(data)
+  return NextResponse.json(ticket)
 }
 
 export async function PATCH(request: Request) {
-  const { title, id }: { title: string; id: string } = await request.json()
+  const { title, id, description, expiresAt }: Ticket = await request.json()
   const { user, error } = await getUser()
   if (error) return error
+  const data: Partial<Ticket> = {
+    title,
+    description,
+    expiresAt
+  }
+  if ((data.title !== undefined) && !data.title) return new Response(getJSONableError("Title is required"), {status: 400})
 
-  if (!title) return new Response("Bad data", {status: 400})
-
-  const data = await prisma.ticket.update({
+  const ticket = await prisma.ticket.update({
     where: {
       id,
       category: {
@@ -67,9 +77,7 @@ export async function PATCH(request: Request) {
         }
       }
     },
-    data: {
-      title,
-    }
+    data
   })
-  return NextResponse.json(data)
+  return NextResponse.json(ticket)
 }
