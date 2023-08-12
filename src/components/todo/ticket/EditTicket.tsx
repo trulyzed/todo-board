@@ -44,7 +44,7 @@ export const EditTicket:FC<EditTicketProps> = ({
       onToggle={onToggle}
       clickEventHandler={handleClickEvent}
       render={(renderProps) => (
-        <Pencil {...renderProps} color="white" className={appendNewClasses("group-hover:block hidden absolute right-2", [renderProps.className])} />
+        <Pencil {...renderProps} color="white" className={appendNewClasses("group-hover:block hidden right-2", [renderProps.className])} />
       )}
     />
   )

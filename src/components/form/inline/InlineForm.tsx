@@ -1,13 +1,14 @@
 'use client'
 
-import { FC, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { Field, FormProps } from "@/components/form/types"
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { FormProps, FormValue } from "@/components/form/types"
 import { Form } from "@/components/form/Form"
 import { appendNewClasses } from "@/lib/utils/classNameUtils"
 import { CancelAction } from "./CancelAction"
 import { useDetectOutsideClick } from "@/hooks/useDetectOutsideClick"
 import { useDetectKeyPress } from "@/hooks/useDetectKeyPress"
-import { InlineFormProps, RenderProps } from "./types"
+import { InlineFormProps } from "./types"
+import { InlineFormField } from "./InlineFormField"
 
 
 export const InlineForm:FC<InlineFormProps> = ({
@@ -23,7 +24,8 @@ export const InlineForm:FC<InlineFormProps> = ({
   onSuccess,
   clearOnSuccess,
   onToggle,
-  clickEventHandler
+  clickEventHandler,
+  enableDraft
 }) => {
   const formRef = useRef(null)
   const [showInput, setShowInput] = useState(false)
@@ -61,29 +63,34 @@ export const InlineForm:FC<InlineFormProps> = ({
     })
   }, [processing, query, queryParams, refId, onSuccess])
 
-  const renderProps: RenderProps = useMemo(() => ({
-    onClick: (event) => {
-      clickEventHandler?.(event)
-      handleToggleInput()
-    },
-    className: 'cursor-pointer',
-  }), [clickEventHandler, handleToggleInput])
+  const handleSaveDraft: FormProps['onSaveDraft'] = useCallback((values?: FormValue) => {
+    if (!enableDraft) return
+    if (values?.[fieldId]) localStorage.setItem(`draft_${refId}_${fieldId}`, values[fieldId])
+  }, [enableDraft, fieldId, refId])
 
   useEffect(() => {
     onToggle?.(showInput)
   }, [showInput, onToggle])
 
-  return !showInput ? render(renderProps) : (
-    <Form
-      ref={formRef}
-      className={appendNewClasses("", [className])}
-      fields={fields}
-      onSubmit={handleSubmit}
-      actions={[<CancelAction key={'cancelAction'} onCancel={handleToggleInput} />]}
-      defaultValues={defaultValues}
-      clearOnSuccess={clearOnSuccess}
-      submitLabel={processing ? "..." : undefined}
-      autofocusField={fieldId}
+  return !showInput ?
+    <InlineFormField
+      refId={refId}
+      fieldId={fieldId}
+      clickEventHandler={clickEventHandler}
+      handleToggleInput={handleToggleInput}
+      render={render}
+      enableDraft={enableDraft}
     />
-  )
+    : <Form
+        ref={formRef}
+        className={appendNewClasses("", [className])}
+        fields={fields}
+        onSubmit={handleSubmit}
+        actions={[<CancelAction key={'cancelAction'} onCancel={handleToggleInput} />]}
+        defaultValues={defaultValues}
+        clearOnSuccess={clearOnSuccess}
+        submitLabel={processing ? "..." : undefined}
+        autofocusField={fieldId}
+        onSaveDraft={handleSaveDraft}
+      />
 }

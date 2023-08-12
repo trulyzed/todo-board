@@ -39,7 +39,8 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
       query: editTicket,
       render: (renderProps) => <TicketField {...renderProps} value={description} icon={<Article weight="bold" />} />,
       defaultValue: description,
-      onSuccess: onSuccess
+      onSuccess: onSuccess,
+      enableDraft: true,
     },
     {
       fieldId: "expiresAt",
