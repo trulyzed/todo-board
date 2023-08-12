@@ -1,12 +1,12 @@
 'use client'
 
-import { FC, ReactElement, cloneElement, useCallback, useMemo, useState } from "react"
+import { FC, ReactElement, cloneElement, useCallback, useEffect, useMemo, useState } from "react"
 import { Field, FormProps } from "@/components/form/types"
 import { Form } from "@/components/form/Form"
 import { appendNewClasses } from "@/lib/utils/classNameUtils"
 import { CancelAction } from "./CancelAction"
 
-type InlineFormProps = {
+export type InlineFormProps = {
   className?: string
   children: ReactElement
   defaultValue?: string
@@ -18,10 +18,23 @@ type InlineFormProps = {
   inputType?: Field['inputType']
   onSuccess?: (resp: any) => void
   clearOnSuccess?: boolean
+  onToggle?: (status: boolean) => void
+  clickEventHandler?: (event: Event) => void
 }
 
 export const InlineForm:FC<InlineFormProps> = ({
-  className='', children, defaultValue, refId, query, queryParams, fieldId, required=false, inputType="Text", onSuccess, clearOnSuccess
+  className='',
+  children,
+  defaultValue,
+  refId, query,
+  queryParams,
+  fieldId,
+  required=false,
+  inputType="Text",
+  onSuccess,
+  clearOnSuccess,
+  onToggle,
+  clickEventHandler
 }) => {
   const [showInput, setShowInput] = useState(false)
   const [processing, setProcessing] = useState(false)
@@ -38,9 +51,12 @@ export const InlineForm:FC<InlineFormProps> = ({
   }, [])
 
   const clickableChildren = useMemo(() => cloneElement(children, {
-    onClick: handleToggleInput,
+    onClick: (event: Event) => {
+      clickEventHandler?.(event)
+      handleToggleInput()
+    },
     className: appendNewClasses(children.props.className, ['cursor-pointer']),
-  }), [children, handleToggleInput])
+  }), [children, handleToggleInput, clickEventHandler])
 
   const handleSubmit: FormProps['onSubmit'] = useCallback((values) => {
     if (processing) return
@@ -56,6 +72,10 @@ export const InlineForm:FC<InlineFormProps> = ({
       setProcessing(false)
     })
   }, [processing, query, queryParams, refId, onSuccess])
+
+  useEffect(() => {
+    onToggle?.(showInput)
+  }, [showInput, onToggle])
 
   return !showInput ? clickableChildren : (
     <Form

@@ -28,9 +28,11 @@ export const Category:FC<CategoryProps> = ({
       <div className="p-2">
         <EditCategory refId={id} defaultValue={title} />
       </div>
-      <div ref={ticketsContainerRef} className="flex flex-col p-1 mt-1 gap-2 overflow-y-auto max-h-full mb-2">
-        {tickets.map((i, index) => <Ticket key={index} {...i} />)}
-      </div>
+      {tickets.length ?
+        <div ref={ticketsContainerRef} className="flex flex-col p-1 mt-1 gap-2 overflow-y-auto max-h-full mb-2">
+          {tickets.map((i, index) => <Ticket key={index} {...i} />)}
+        </div>
+      : null}
       <AddTicket onSuccess={handleSuccessCreate} refId={id} />
     </div>
   )
