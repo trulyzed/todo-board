@@ -1,9 +1,19 @@
 'use client'
 
-import { ChangeEvent, FC, FormEvent, useCallback, useEffect, useRef, useState } from "react"
+import { ChangeEvent, FormEvent, forwardRef, useCallback, useEffect, useRef, useState } from "react"
 import { Field, FormProps } from "./types"
 
-export const Form:FC<FormProps> = ({className, fields, defaultValues, onSubmit, onSaveDraft, submitLabel="Save", actions, clearOnSuccess}) => {
+export const Form = forwardRef<HTMLFormElement, FormProps>(({
+  className,
+  fields,
+  defaultValues,
+  onSubmit,
+  onSaveDraft,
+  submitLabel="Save",
+  actions,
+  clearOnSuccess,
+  autofocusField
+}, ref) => {
   const [formValues, setFormValues] = useState(defaultValues)
   const hasChangedRef = useRef(false)
 
@@ -36,7 +46,7 @@ export const Form:FC<FormProps> = ({className, fields, defaultValues, onSubmit, 
   }, [formValues, onSaveDraft])
 
   return (
-    <form className={`flex flex-col gap-2 ${className}`} onSubmit={handleSubmit}>
+    <form ref={ref} className={`flex flex-col gap-2 ${className}`} onSubmit={handleSubmit}>
       {fields.map(i => (
         <div key={i.id} className="flex gap-2">
           {i.label ? <label className="shrink-0" htmlFor={i.id}>{i.label}</label> : null}
@@ -49,6 +59,7 @@ export const Form:FC<FormProps> = ({className, fields, defaultValues, onSubmit, 
               onChange={handleChange(i.id)}
               required={i.required}
               rows={10}
+              autoFocus={autofocusField === i.id}
             />
             : <input
                 className="w-full rounded p-2"
@@ -59,6 +70,7 @@ export const Form:FC<FormProps> = ({className, fields, defaultValues, onSubmit, 
                 onChange={handleChange(i.id)}
                 pattern={i.inputType === "DateTime" ? "[0-9]{1,2}/[0-9]{1,2}/[0-9]{4} [0-9]{1,2}:[0-9]{1,2}" : undefined}
                 required={i.required}
+                autoFocus={autofocusField === i.id}
               />
           }
         </div>
@@ -69,4 +81,6 @@ export const Form:FC<FormProps> = ({className, fields, defaultValues, onSubmit, 
       </div>
     </form>
   )
-}
+})
+
+Form.displayName = "Form"

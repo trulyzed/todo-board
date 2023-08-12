@@ -26,19 +26,23 @@ export const Modal: FC<ModalProps> = ({
   useDetectKeyPress(undefined, handleClose)
   useDetectOutsideClick(modalRef, handleClose)
 
-  return show ? (
+  if (!show) return null
+
+  return (
     createPortal(
-      <div ref={modalRef} className="w-[calc(100vw_-_50%)] h-[calc(100vw_-_50%)] bg-black/80 absolute inset-0 m-auto overflow-y-auto rounded">
-        <div className="relative">
-          <button className="absolute right-0 bg-slate-200 rounded p-2 m-2" onClick={handleClose}>
-            <X weight="bold" />
-          </button>
-        </div>
-        <div className="p-5">
-          {children}
+      <div className="bg-slate-900/75 absolute inset-0 m-auto overflow-y-auto flex items-center justify-center">
+        <div ref={modalRef} className="w-[50vw] h-[50vh] bg-slate-200 rounded-xl drop-shadow-md">
+          <div className="relative self-end">
+            <button className="absolute right-0 bg-slate-300 rounded p-2 m-2" onClick={handleClose}>
+              <X weight="bold" />
+            </button>
+          </div>
+          <div className="p-5 mt-6">
+            {children}
+          </div>
         </div>
       </div>,
       document.getElementById('modal-root')!
     )
-  ) : null
+  )
 }

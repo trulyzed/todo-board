@@ -1,10 +1,12 @@
 'use client'
 
-import { FC, ReactElement, cloneElement, useCallback, useEffect, useMemo, useState } from "react"
+import { FC, ReactElement, cloneElement, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Field, FormProps } from "@/components/form/types"
 import { Form } from "@/components/form/Form"
 import { appendNewClasses } from "@/lib/utils/classNameUtils"
 import { CancelAction } from "./CancelAction"
+import { useDetectOutsideClick } from "@/hooks/useDetectOutsideClick"
+import { useDetectKeyPress } from "@/hooks/useDetectKeyPress"
 
 export type InlineFormProps = {
   className?: string
@@ -36,8 +38,15 @@ export const InlineForm:FC<InlineFormProps> = ({
   onToggle,
   clickEventHandler
 }) => {
+  const formRef = useRef(null)
   const [showInput, setShowInput] = useState(false)
   const [processing, setProcessing] = useState(false)
+  
+  const handleHideInput = useCallback(() => {
+    setShowInput(false)
+  }, [])
+  useDetectOutsideClick(formRef, handleHideInput)
+  useDetectKeyPress(undefined, handleHideInput)
 
   const fields = useMemo<FormProps['fields']>(() => ([{
     id: fieldId,
@@ -79,6 +88,7 @@ export const InlineForm:FC<InlineFormProps> = ({
 
   return !showInput ? clickableChildren : (
     <Form
+      ref={formRef}
       className={appendNewClasses("", [className])}
       fields={fields}
       onSubmit={handleSubmit}
@@ -86,6 +96,7 @@ export const InlineForm:FC<InlineFormProps> = ({
       defaultValues={defaultValues}
       clearOnSuccess={clearOnSuccess}
       submitLabel={processing ? "..." : undefined}
+      autofocusField={fieldId}
     />
   )
 }

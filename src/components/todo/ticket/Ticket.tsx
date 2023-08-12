@@ -25,14 +25,15 @@ export const Ticket:FC<TicketProps> = ({
     setShowDetails(false)
   }, [])
 
-  return showDetails ?
-    <Modal show={showDetails} onClose={handleClose}>
-      <TicketDetails id={id} title={title} />
-    </Modal>
-    : (
+  return (
+    <>
+      <Modal show={showDetails} onClose={handleClose}>
+        <TicketDetails id={id} title={title} />
+      </Modal>
       <div className="rounded-lg bg-zinc-700 flex items-center justify-between p-2 group relative cursor-pointer" onClick={handleClick}>
         {!isEditing ? <p className="text-white select-none">{title}</p> : null}
         <EditTicket refId={id} defaultValue={title} onToggle={setIsEditing} />
       </div>
+    </>
     )
 }
