@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, ReactElement, cloneElement, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { FC, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Field, FormProps } from "@/components/form/types"
 import { Form } from "@/components/form/Form"
 import { appendNewClasses } from "@/lib/utils/classNameUtils"
@@ -8,11 +8,16 @@ import { CancelAction } from "./CancelAction"
 import { useDetectOutsideClick } from "@/hooks/useDetectOutsideClick"
 import { useDetectKeyPress } from "@/hooks/useDetectKeyPress"
 
+type RenderProps = {
+  onClick: (e: any) => void,
+  className: string
+}
+
 export type InlineFormProps = {
   className?: string
-  children: ReactElement
   defaultValue?: string
   refId?: string
+  render: (props: RenderProps) => ReactNode
   query: (payload: any) => Promise<any>
   queryParams?: any
   fieldId: string
@@ -26,9 +31,10 @@ export type InlineFormProps = {
 
 export const InlineForm:FC<InlineFormProps> = ({
   className='',
-  children,
+  render,
   defaultValue,
-  refId, query,
+  refId,
+  query,
   queryParams,
   fieldId,
   required=false,
@@ -59,14 +65,6 @@ export const InlineForm:FC<InlineFormProps> = ({
     setShowInput(prevVal => !prevVal)
   }, [])
 
-  const clickableChildren = useMemo(() => cloneElement(children, {
-    onClick: (event: Event) => {
-      clickEventHandler?.(event)
-      handleToggleInput()
-    },
-    className: appendNewClasses(children.props.className, ['cursor-pointer']),
-  }), [children, handleToggleInput, clickEventHandler])
-
   const handleSubmit: FormProps['onSubmit'] = useCallback((values) => {
     if (processing) return
     setProcessing(true)
@@ -82,11 +80,19 @@ export const InlineForm:FC<InlineFormProps> = ({
     })
   }, [processing, query, queryParams, refId, onSuccess])
 
+  const renderProps: RenderProps = useMemo(() => ({
+    onClick: (event) => {
+      clickEventHandler?.(event)
+      handleToggleInput()
+    },
+    className: 'cursor-pointer',
+  }), [clickEventHandler, handleToggleInput])
+
   useEffect(() => {
     onToggle?.(showInput)
   }, [showInput, onToggle])
 
-  return !showInput ? clickableChildren : (
+  return !showInput ? render(renderProps) : (
     <Form
       ref={formRef}
       className={appendNewClasses("", [className])}

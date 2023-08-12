@@ -5,6 +5,7 @@ import { FC, useCallback, useTransition } from "react"
 import { InlineForm, InlineFormProps } from "@/components/form/inline/InlineForm"
 import { useRouter } from "next/navigation"
 import { Pencil } from "@phosphor-icons/react"
+import { appendNewClasses } from "@/lib/utils/classNameUtils"
 
 type EditTicketProps = {
   defaultValue: string
@@ -41,8 +42,9 @@ export const EditTicket:FC<EditTicketProps> = ({
       onSuccess={handleSuccessfulEdit}
       onToggle={onToggle}
       clickEventHandler={handleClickEvent}
-    >
-      <Pencil color="white" className="group-hover:block hidden absolute right-2" />
-    </InlineForm>
+      render={(renderProps) => (
+        <Pencil {...renderProps} color="white" className={appendNewClasses("group-hover:block hidden absolute right-2", [renderProps.className])} />
+      )}
+    />
   )
 }

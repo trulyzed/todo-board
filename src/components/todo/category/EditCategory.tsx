@@ -4,6 +4,7 @@ import { editCategory } from "@/queries/client/category"
 import { FC, useCallback, useTransition } from "react"
 import { InlineForm } from "@/components/form/inline/InlineForm"
 import { useRouter } from "next/navigation"
+import { appendNewClasses } from "@/lib/utils/classNameUtils"
 
 type EditCategoryProps = {
   defaultValue: string
@@ -32,8 +33,9 @@ export const EditCategory:FC<EditCategoryProps> = ({
       fieldId={'title'}
       required
       onSuccess={handleSuccessfulEdit}
-    >
-      <h4 className="font-bold text-slate-50">{defaultValue}</h4>
-    </InlineForm>
+      render={(renderProps) => (
+        <h4 {...renderProps} className={appendNewClasses("font-bold text-slate-50", [renderProps.className])}>{defaultValue}</h4>
+      )}
+    />
   )
 }

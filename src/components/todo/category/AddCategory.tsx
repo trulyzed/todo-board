@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { createCategory } from "@/queries/client/category"
 import { InlineForm } from "@/components/form/inline/InlineForm"
 import { Plus } from "@phosphor-icons/react"
+import { appendNewClasses } from "@/lib/utils/classNameUtils"
 
 export const AddCategory = () => {
   const router = useRouter()
@@ -23,11 +24,12 @@ export const AddCategory = () => {
       fieldId={'title'}
       required
       onSuccess={handleSuccessfulCreate}
-    >
-      <button className={`self-start rounded bg-blue-800 px-2 py-1 text-white flex items-center gap-2 shrink-0`}>
-        <Plus weight="bold" />
-        {"Add Category"}
-      </button>
-    </InlineForm>
+      render={(renderProps) => (
+        <button {...renderProps} className={appendNewClasses(`self-start rounded bg-blue-800 px-2 py-1 text-white flex items-center gap-2 shrink-0`, [renderProps.className])}>
+          <Plus weight="bold" />
+          {"Add Category"}
+        </button>
+      )}
+    />
   )
 }
