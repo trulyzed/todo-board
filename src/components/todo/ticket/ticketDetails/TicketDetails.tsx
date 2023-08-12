@@ -5,6 +5,7 @@ import { FormProps } from "@/components/form/types"
 import { getTicket } from "@/queries/client/ticket"
 import { EditTicketDetails } from "./EditTicketDetails"
 import { useRouter } from "next/navigation"
+import { formatDate } from "@/lib/utils/dateUtils"
 
 type TicketDetailsProps = {
   id: string
@@ -26,7 +27,10 @@ export const TicketDetails:FC<TicketDetailsProps> = ({
   useEffect(() => {
     (async () => {
       const data = await getTicket({id})
-      setTicketDetails(data)
+      setTicketDetails({
+        ...data,
+        expiresAt: formatDate(data.expiresAt)
+      })
     })()
   }, [id])
 

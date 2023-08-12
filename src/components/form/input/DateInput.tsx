@@ -2,6 +2,7 @@
 
 import { ChangeEvent, FC, useCallback } from "react"
 import { Field } from "@/components/form/types"
+import { DATE_FORMAT } from "@/components/form/constants"
 
 export const DateInput:FC<Omit<Field, "inputType"> & {
   className: string
@@ -18,8 +19,7 @@ export const DateInput:FC<Omit<Field, "inputType"> & {
   onChange
 }) => {
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    console.log('xxxxxxxxxx', e.target.value)
-
+    onChange(e.target.value)
   }, [onChange])
 
   return (
@@ -27,8 +27,8 @@ export const DateInput:FC<Omit<Field, "inputType"> & {
       className={className}
       name={id}
       type="text"
-      placeholder={placeholder || "Date format DD/MM/YYYY HH:MM"}
-      pattern={"[0-9]{1,2}/[0-9]{1,2}/[0-9]{4} [0-9]{1,2}:[0-9]{1,2}"}
+      placeholder={placeholder || `Date format ${DATE_FORMAT}`}
+      pattern={"[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2}"}
       value={value}
       onChange={handleChange}
       required={required}
