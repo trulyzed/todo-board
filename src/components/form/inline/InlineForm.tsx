@@ -37,7 +37,8 @@ export const InlineForm:FC<InlineFormProps> = ({
   }, [])
 
   const clickableChildren = useMemo(() => cloneElement(children, {
-    onClick: handleToggleInput
+    onClick: handleToggleInput,
+    className: appendNewClasses(children.props.className, ['cursor-pointer']),
   }), [children, handleToggleInput])
 
   const handleSubmit: FormProps['onSubmit'] = useCallback((values) => {
