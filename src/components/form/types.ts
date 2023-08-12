@@ -14,8 +14,12 @@ export type FormValue = {
 }
 
 export type FormProps = {
+  className?: string
   fields: Field[]
   defaultValues?: FormValue
-  onSubmit: (values?: FormValue) => Promise<boolean>
+  onSubmit: (values?: FormValue) => Promise<boolean> | void
   onSaveDraft?: (values?: FormValue) => void
+  submitLabel?: string
+  actions?: ReactNode
+  clearOnSubmit?: boolean
 }

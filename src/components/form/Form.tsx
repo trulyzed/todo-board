@@ -3,7 +3,7 @@
 import { ChangeEvent, FC, FormEvent, useCallback, useEffect, useRef, useState } from "react"
 import { Field, FormProps } from "./types"
 
-export const Form:FC<FormProps> = ({fields, defaultValues, onSubmit, onSaveDraft}) => {
+export const Form:FC<FormProps> = ({className, fields, defaultValues, onSubmit, onSaveDraft, submitLabel="Save", actions, clearOnSubmit}) => {
   const [formValues, setFormValues] = useState(defaultValues)
   const hasChangedRef = useRef(false)
 
@@ -19,7 +19,8 @@ export const Form:FC<FormProps> = ({fields, defaultValues, onSubmit, onSaveDraft
     e.preventDefault()
     const submitted = await onSubmit(formValues)
     if (submitted) hasChangedRef.current = false
-  }, [formValues, onSubmit])
+    if (clearOnSubmit) setFormValues(undefined)
+  }, [formValues, onSubmit, clearOnSubmit])
 
   // Save as draft before unload if values are changed
   useEffect(() => {
@@ -35,10 +36,10 @@ export const Form:FC<FormProps> = ({fields, defaultValues, onSubmit, onSaveDraft
   }, [formValues, onSaveDraft])
 
   return (
-    <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+    <form className={`flex flex-col gap-2 ${className}`} onSubmit={handleSubmit}>
       {fields.map(i => (
         <div key={i.id} className="flex gap-2">
-          <label className="shrink-0" htmlFor={i.id}>{i.label}</label>
+          {i.label ? <label className="shrink-0" htmlFor={i.id}>{i.label}</label> : null}
           {i.inputType === "TextArea" ?
             <textarea
               className="w-full rounded"
@@ -50,7 +51,7 @@ export const Form:FC<FormProps> = ({fields, defaultValues, onSubmit, onSaveDraft
               rows={10}
             />
             : <input
-                className="w-full rounded py-2 px-1"
+                className="w-full rounded p-2"
                 name={i.id}
                 type="text"
                 placeholder={i.placeholder || (i.inputType === "DateTime" ? "Date format DD/MM/YYYY HH:MM" : undefined)}
@@ -62,7 +63,10 @@ export const Form:FC<FormProps> = ({fields, defaultValues, onSubmit, onSaveDraft
           }
         </div>
       ))}
-      <button className="self-start bg-blue-500 rounded py-1 px-2 text-white" type="submit">Save</button>
+      <div className="flex items-center gap-1">
+        <button className="self-start bg-blue-800 rounded py-1 px-2 text-white" type="submit">{submitLabel}</button>
+        {actions}
+      </div>
     </form>
   )
 }

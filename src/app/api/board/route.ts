@@ -1,18 +1,10 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/database/prisma"
-import { getServerSession } from "next-auth"
-import { authConfig } from "@/lib/auth"
+import { getUser } from "@/lib/api/query/getUser"
 
 export async function GET(request: Request) {
-  const session = await getServerSession(authConfig)
-  if (!session) return new Response("Unauthorized", {status: 401})
-  else if (!session.user?.email) return new Response("No email found!", {status: 502})
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email: session.user.email
-    }
-  })
+  const { user, error } = await getUser()
+  if (error) return error
 
   const data = await prisma.board.findMany({
     where: {

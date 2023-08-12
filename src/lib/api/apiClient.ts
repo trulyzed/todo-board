@@ -1,9 +1,9 @@
 import { Axios } from "axios"
 
 
-export const apiClient = (cookie: string) => new Axios({
-  baseURL: process.env.API_URL,
+export const apiClient = (cookie?: string, isClientSide?: boolean) => new Axios({
+  baseURL: isClientSide ? '/api' : process.env.API_URL,
   headers: {
-    Cookie: cookie
-  }
+    ...cookie && {Cookie: cookie}
+  },
 })

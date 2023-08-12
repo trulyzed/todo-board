@@ -1,11 +1,9 @@
 import { apiClient } from "@/lib/api/apiClient"
-import { cookies } from "next/headers"
 
-export const getCategories = async () => {
-  const { data } = await apiClient(cookies().toString()).get('/board')
+export const createCategory = async (payload: any) => {
+  const { data } = await apiClient(undefined, true).post('/category', JSON.stringify(payload))
 
   try {
-    const [board] = JSON.parse(data || null)
-    return board.categories
+    return JSON.parse(data || null)
   } catch (error) {}
 }
