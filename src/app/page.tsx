@@ -1,10 +1,12 @@
 import { AddCategory } from "@/components/todo/category/AddCategory"
 import { Category } from "@/components/todo/category/Category"
 import { getCategories } from "@/queries/server/category"
+import { Ticket } from "@prisma/client"
 
 type Category = {
   title: string
   id: string
+  tickets: Ticket[]
 }
 
 export default async function Page() {

@@ -11,7 +11,11 @@ export async function GET(request: Request) {
       userId: user?.id
     },
     include: {
-      categories: true
+      categories: {
+        include: {
+          tickets: true
+        }
+      }
     }
   })
   return NextResponse.json(data)
