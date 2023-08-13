@@ -16,7 +16,7 @@ export const CancelAction:FC<CancelActionProps> = ({
   onCancel
 }) => {
   return (
-    <Button className={appendNewClasses(`rounded bg-red-500 px-2 py-1 text-white flex items-center gap-2`, [className])} onClick={onCancel}>
+    <Button variant="ghost" className={appendNewClasses(`rounded text-red-500 px-2 py-1 text-white flex items-center gap-2 font-semibold`, [className])} onClick={onCancel}>
       {label}
     </Button>
   )
