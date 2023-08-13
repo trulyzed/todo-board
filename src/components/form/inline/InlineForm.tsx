@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useCallback, useEffect, useState } from "react"
+import { FC, useCallback, useEffect, useMemo, useState } from "react"
 import { FormValue } from "@/components/form/types"
 import { appendNewClasses } from "@/lib/utils/classNameUtils"
 import { InlineFormProps } from "./types"
@@ -30,10 +30,11 @@ export const InlineForm:FC<InlineFormProps> = ({
   }, clearAfterSubmit})
   const [showForm, setShowForm] = useState(false)
   const [processing, setProcessing] = useState(false)
-  const { draft, clearDraft } = useDraft({
+  const unsavedValue = useMemo(() => (hasUnsavedValue ? formValues?.[fieldId] : undefined), [hasUnsavedValue, formValues, fieldId])
+  const { draft, clearDraft, saveDraft } = useDraft({
     canDraft,
     draftId: `${refId}_${fieldId}`,
-    unsavedValue: hasUnsavedValue ? formValues?.[fieldId] : undefined
+    unsavedValue
   })
 
   useEffect(() => {
@@ -41,9 +42,10 @@ export const InlineForm:FC<InlineFormProps> = ({
   }, [setFieldValue, initialValue, fieldId])
   
   const handleHideForm = useCallback(() => {
+    if (unsavedValue) saveDraft(unsavedValue)
     setShowForm(false)
     resetForm(true)
-  }, [resetForm])
+  }, [resetForm, saveDraft, unsavedValue])
 
   const handleShowForm = useCallback(() => {
     setShowForm(true)

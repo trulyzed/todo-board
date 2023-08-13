@@ -14,8 +14,6 @@ export const useDraft = ({
   const draftStorageKey = `draft_${draftId}`
   const [draft, setDraft] = useState<string>()
 
-  console.log(draftId, draft, unsavedValue)
-
   useEffect(() => {
     if (!canDraft) return
     setDraft(localStorage.getItem(draftStorageKey) || undefined)
