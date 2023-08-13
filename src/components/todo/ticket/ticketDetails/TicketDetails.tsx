@@ -27,7 +27,7 @@ export const TicketDetails:FC<TicketDetailsProps> = ({
     const data = await getTicket({id})
     setTicketDetails({
       ...data,
-      expiresAt: formatDate(data.expiresAt)
+      expiresAt: data.expiresAt ? formatDate(data.expiresAt) : ""
     })
   }, [id])
 
