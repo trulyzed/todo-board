@@ -43,7 +43,7 @@ export const TicketDetails:FC<TicketDetailsProps> = ({
   }, [router, getData])
 
   return (
-    <div className="rounded-lg bg-zinc-400 p-4">
+    <div className="rounded-lg bg-zinc-100 p-2 my-2">
       <EditTicketDetails {...ticketDetails} onSuccess={handleSuccessfulEdit} />
     </div>
   )

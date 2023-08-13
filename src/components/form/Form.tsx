@@ -6,9 +6,11 @@ import { TextInput } from "./input/TextInput"
 import { DateInput } from "./input/DateInput"
 import { TextAreaInput } from "./input/TextAreaInput"
 import { Button } from "@/components/interactive/Button"
+import { appendNewClasses } from "@/lib/utils/classNameUtils"
 
 export const Form = forwardRef<HTMLFormElement, FormProps>(({
   className,
+  inputClassName='',
   fields,
   formValues,
   setFieldValue,
@@ -27,7 +29,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({
           {i.inputType === "TextArea" ?
             <TextAreaInput
               id={i.id}
-              className="w-full rounded p-2"
+              className={appendNewClasses("w-full rounded p-2", [inputClassName])}
               value={formValues?.[i.id] || ""}
               onChange={handleChange(i.id)}
               required={i.required}
@@ -37,7 +39,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({
             : i.inputType === "DateTime" ?
               <DateInput
                 id={i.id}
-                className="w-full rounded p-2"
+                className={appendNewClasses("w-full rounded p-2", [inputClassName])}
                 value={formValues?.[i.id] || ""}
                 onChange={handleChange(i.id)}
                 required={i.required}
@@ -46,7 +48,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({
               />
             : <TextInput
                 id={i.id}
-                className="w-full rounded p-2"
+                className={appendNewClasses("w-full rounded p-2", [inputClassName])}
                 value={formValues?.[i.id] || ""}
                 onChange={handleChange(i.id)}
                 required={i.required}

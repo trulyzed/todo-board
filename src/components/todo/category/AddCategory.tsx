@@ -25,7 +25,7 @@ export const AddCategory = () => {
       required
       onSuccess={handleSuccessfulCreate}
       render={(renderProps) => (
-        <Button {...renderProps}>
+        <Button {...renderProps} className="inline w-[max-content]">
           <Plus weight="bold" />
           {"Add Category"}
         </Button>

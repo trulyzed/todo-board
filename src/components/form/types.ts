@@ -15,6 +15,7 @@ export type FormValue = {
 
 export type FormProps = {
   className?: string
+  inputClassName?: string
   fields: Field[]
   onSubmit: FormEventHandler<HTMLFormElement>
   submitLabel?: string

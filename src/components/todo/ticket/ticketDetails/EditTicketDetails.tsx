@@ -54,7 +54,7 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
   ]), [onSuccess, id, title, description, expiresAt])
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       {fields.map((field) => <InlineForm key={field.fieldId} {...field} />)}
     </div>
   )
@@ -72,7 +72,7 @@ export const TicketField:FC<TicketFieldProps> = ({
   ...otherProps
 }) => {
   return (
-    <div {...otherProps} className={appendNewClasses("flex items-center bg-gray-200 rounded p-2 gap-2", [otherProps.className])}>
+    <div {...otherProps} className={appendNewClasses("flex items-center bg-gray-200 rounded p-3 gap-2 min-h-[50px]", [otherProps.className])}>
       {icon} {value}
     </div>
   )
