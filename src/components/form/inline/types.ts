@@ -8,7 +8,7 @@ export type RenderProps = {
 
 export type InlineFormProps = {
   className?: string
-  defaultValue?: string
+  initialValue?: string
   refId?: string
   render: (props: RenderProps) => ReactNode
   query: (payload: any) => Promise<any>
@@ -17,7 +17,7 @@ export type InlineFormProps = {
   required?: Field['required']
   inputType?: Field['inputType']
   onSuccess?: (resp: any) => void
-  clearOnSuccess?: boolean
+  clearAfterSubmit?: boolean
   onToggle?: (status: boolean) => void
   clickEventHandler?: (event: Event) => void
   enableDraft?: boolean

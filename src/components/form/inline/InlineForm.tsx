@@ -9,12 +9,12 @@ import { useDetectOutsideClick } from "@/hooks/useDetectOutsideClick"
 import { useDetectKeyPress } from "@/hooks/useDetectKeyPress"
 import { InlineFormProps } from "./types"
 import { InlineFormField } from "./InlineFormField"
-
+import { useForm } from "@/components/form/hooks/useForm"
 
 export const InlineForm:FC<InlineFormProps> = ({
   className='',
   render,
-  defaultValue,
+  initialValue,
   refId,
   query,
   queryParams,
@@ -22,33 +22,40 @@ export const InlineForm:FC<InlineFormProps> = ({
   required=false,
   inputType="Text",
   onSuccess,
-  clearOnSuccess,
+  clearAfterSubmit,
   onToggle,
   clickEventHandler,
   enableDraft
 }) => {
   const formRef = useRef(null)
+  const { formValues, handleSubmit, setFieldValue } = useForm({initialValues: {
+    [fieldId]: initialValue
+  }, clearAfterSubmit})
   const [showInput, setShowInput] = useState(false)
   const [processing, setProcessing] = useState(false)
-  
-  const handleHideInput = useCallback(() => {
-    setShowInput(false)
-  }, [])
-  useDetectOutsideClick(formRef, handleHideInput)
-  useDetectKeyPress(undefined, handleHideInput)
+
+  useEffect(() => {
+    setFieldValue(fieldId, initialValue)
+  }, [setFieldValue, initialValue, fieldId])
 
   const fields = useMemo<FormProps['fields']>(() => ([{
     id: fieldId,
     inputType,
     required,
   }]), [fieldId, inputType, required])
-  const defaultValues = useMemo<FormProps['defaultValues']>(() => defaultValue !== undefined ? ({[fieldId]: defaultValue}) : undefined, [fieldId, defaultValue])
+  
+  const handleHideInput = useCallback(() => {
+    setShowInput(false)
+  }, [])
+
+  useDetectOutsideClick(formRef, handleHideInput)
+  useDetectKeyPress(undefined, handleHideInput)
 
   const handleToggleInput = useCallback(() => {
     setShowInput(prevVal => !prevVal)
   }, [])
 
-  const handleSubmit: FormProps['onSubmit'] = useCallback((values) => {
+  const onSubmit = useCallback((values: FormValue) => {
     if (processing) return
     setProcessing(true)
     query({
@@ -63,10 +70,23 @@ export const InlineForm:FC<InlineFormProps> = ({
     })
   }, [processing, query, queryParams, refId, onSuccess])
 
-  const handleSaveDraft: FormProps['onSaveDraft'] = useCallback((values?: FormValue) => {
-    if (!enableDraft) return
-    if (values?.[fieldId]) localStorage.setItem(`draft_${refId}_${fieldId}`, values[fieldId])
-  }, [enableDraft, fieldId, refId])
+    // // Save as draft before unload if values are changed
+    // useEffect(() => {
+    //   if (!onSaveDraft) return
+    //   const handleBeforeUnload = () => {
+    //     if (hasChangedRef.current) onSaveDraft(formValues)
+    //   }
+  
+    //   window.addEventListener('beforeunload', handleBeforeUnload)
+    //   return () => {
+    //     window.removeEventListener('beforeunload', handleBeforeUnload)
+    //   }
+    // }, [formValues, onSaveDraft])
+
+  // const handleSaveDraft: FormProps['onSaveDraft'] = useCallback((values?: FormValue) => {
+  //   if (!enableDraft) return
+  //   if (values?.[fieldId]) localStorage.setItem(`draft_${refId}_${fieldId}`, values[fieldId])
+  // }, [enableDraft, fieldId, refId])
 
   useEffect(() => {
     onToggle?.(showInput)
@@ -85,12 +105,13 @@ export const InlineForm:FC<InlineFormProps> = ({
         ref={formRef}
         className={appendNewClasses("", [className])}
         fields={fields}
-        onSubmit={handleSubmit}
+        setFieldValue={setFieldValue}
+        formValues={formValues}
+        onSubmit={handleSubmit(onSubmit)}
         actions={[<CancelAction key={'cancelAction'} onCancel={handleToggleInput} />]}
-        defaultValues={defaultValues}
-        clearOnSuccess={clearOnSuccess}
         submitLabel={processing ? "..." : undefined}
         autofocusField={fieldId}
-        onSaveDraft={handleSaveDraft}
       />
 }
+
+//         onSaveDraft={handleSaveDraft}

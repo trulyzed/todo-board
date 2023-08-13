@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "tsc --noemit && next lint && ",
+    "lint": "tsc --noemit && next lint",
     "lint-staged": "tsc --noemit && lint-staged",
     "prepare": "husky install",
     "prisma": "prisma init --datasource-provider",

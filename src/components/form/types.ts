@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { FormEventHandler, ReactNode } from "react"
 import { InputTypes } from "./constants"
 
 export type Field = {
@@ -10,17 +10,16 @@ export type Field = {
 }
 
 export type FormValue = {
-  [key: Field["id"]]: string
-}
+  [key: Field["id"]]: string | undefined
+} | undefined
 
 export type FormProps = {
   className?: string
   fields: Field[]
-  defaultValues?: FormValue
-  onSubmit: (values?: FormValue) => Promise<boolean> | void
-  onSaveDraft?: (values?: FormValue) => void
+  onSubmit: FormEventHandler<HTMLFormElement>
   submitLabel?: string
   actions?: ReactNode
-  clearOnSuccess?: boolean
   autofocusField?: Field['id']
+  formValues?: FormValue
+  setFieldValue: (field: string, value: string) => void
 }

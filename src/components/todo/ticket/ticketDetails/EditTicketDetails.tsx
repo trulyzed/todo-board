@@ -29,7 +29,7 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
       required: true,
       query: editTicket,
       render: (renderProps) => <TicketField {...renderProps} value={title} icon={<Subtitles weight="bold" />} />,
-      defaultValue: title,
+      initialValue: title,
       onSuccess: onSuccess
     },
     {
@@ -38,7 +38,7 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
       inputType: "TextArea",
       query: editTicket,
       render: (renderProps) => <TicketField {...renderProps} value={description} icon={<Article weight="bold" />} />,
-      defaultValue: description,
+      initialValue: description,
       onSuccess: onSuccess,
       enableDraft: true,
     },
@@ -48,7 +48,7 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
       inputType: "DateTime",
       query: editTicket,
       render: (renderProps) => <TicketField {...renderProps} value={expiresAt} icon={<Calendar weight="bold" />} />,
-      defaultValue: expiresAt,
+      initialValue: expiresAt,
       onSuccess: onSuccess
     },
   ]), [onSuccess, id, title, description, expiresAt])

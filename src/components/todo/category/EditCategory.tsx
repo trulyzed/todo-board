@@ -7,12 +7,12 @@ import { useRouter } from "next/navigation"
 import { appendNewClasses } from "@/lib/utils/classNameUtils"
 
 type EditCategoryProps = {
-  defaultValue: string
+  initialValue: string
   refId: string
 }
 
 export const EditCategory:FC<EditCategoryProps> = ({
-  defaultValue,
+  initialValue,
   refId
 }) => {
   const router = useRouter()
@@ -27,14 +27,14 @@ export const EditCategory:FC<EditCategoryProps> = ({
   return (
     <InlineForm
       className=''
-      defaultValue={defaultValue}
+      initialValue={initialValue}
       refId={refId}
       query={editCategory}
       fieldId={'title'}
       required
       onSuccess={handleSuccessfulEdit}
       render={(renderProps) => (
-        <h4 {...renderProps} className={appendNewClasses("font-bold text-slate-50", [renderProps.className])}>{defaultValue}</h4>
+        <h4 {...renderProps} className={appendNewClasses("font-bold text-slate-50", [renderProps.className])}>{initialValue}</h4>
       )}
     />
   )

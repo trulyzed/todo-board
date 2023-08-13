@@ -23,21 +23,24 @@ export const TicketDetails:FC<TicketDetailsProps> = ({
   const router = useRouter()
   const [isPendingTransition, startTransition] = useTransition()
 
-  useEffect(() => {
-    (async () => {
-      const data = await getTicket({id})
-      setTicketDetails({
-        ...data,
-        expiresAt: formatDate(data.expiresAt)
-      })
-    })()
+  const getData = useCallback(async () => {
+    const data = await getTicket({id})
+    setTicketDetails({
+      ...data,
+      expiresAt: formatDate(data.expiresAt)
+    })
   }, [id])
+
+  useEffect(() => {
+    getData()
+  }, [getData])
 
   const handleSuccessfulEdit = useCallback(() => {
     startTransition(() => {
       router.refresh()
     })
-  }, [router])
+    getData()
+  }, [router, getData])
 
   return (
     <div className="rounded-lg bg-zinc-400 p-4">

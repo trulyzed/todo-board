@@ -9,13 +9,13 @@ import { appendNewClasses } from "@/lib/utils/classNameUtils"
 import { InlineFormProps } from "@/components/form/inline/types"
 
 type EditTicketProps = {
-  defaultValue: string
+  initialValue: string
   refId: string
   onToggle?: InlineFormProps['onToggle']
 }
 
 export const EditTicket:FC<EditTicketProps> = ({
-  defaultValue,
+  initialValue,
   refId,
   onToggle
 }) => {
@@ -35,7 +35,7 @@ export const EditTicket:FC<EditTicketProps> = ({
   return (
     <InlineForm
       className=''
-      defaultValue={defaultValue}
+      initialValue={initialValue}
       refId={refId}
       query={editTicket}
       fieldId={'title'}

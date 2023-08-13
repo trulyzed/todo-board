@@ -1,56 +1,25 @@
 'use client'
 
-import { FormEvent, forwardRef, useCallback, useEffect, useRef, useState } from "react"
-import { Field, FormProps } from "./types"
+import { forwardRef, useCallback } from "react"
+import { FormProps } from "./types"
 import { TextInput } from "./input/TextInput"
 import { DateInput } from "./input/DateInput"
 import { TextAreaInput } from "./input/TextAreaInput"
 
-
 export const Form = forwardRef<HTMLFormElement, FormProps>(({
   className,
   fields,
-  defaultValues,
+  formValues,
+  setFieldValue,
   onSubmit,
-  onSaveDraft,
   submitLabel="Save",
   actions,
-  clearOnSuccess,
   autofocusField
 }, ref) => {
-  const [formValues, setFormValues] = useState(defaultValues)
-  const hasChangedRef = useRef(false)
-
-  const handleChange = useCallback((id: Field['id']) => (value: string) => {
-    setFormValues(prevValue => ({
-      ...prevValue,
-      [id]: value
-    }))
-    hasChangedRef.current = true
-  }, [])
-
-  const handleSubmit = useCallback(async (e: FormEvent) => {
-    e.preventDefault()
-    const submitted = await onSubmit(formValues)
-    if (submitted) hasChangedRef.current = false
-    if (clearOnSuccess) setFormValues(undefined)
-  }, [formValues, onSubmit, clearOnSuccess])
-
-  // Save as draft before unload if values are changed
-  useEffect(() => {
-    if (!onSaveDraft) return
-    const handleBeforeUnload = () => {
-      if (hasChangedRef.current) onSaveDraft(formValues)
-    }
-
-    window.addEventListener('beforeunload', handleBeforeUnload)
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-    }
-  }, [formValues, onSaveDraft])
+  const handleChange = useCallback((field: string) => (value: string) => setFieldValue(field, value), [setFieldValue])
 
   return (
-    <form ref={ref} className={`flex flex-col gap-2 ${className}`} onSubmit={handleSubmit}>
+    <form ref={ref} className={`flex flex-col gap-2 ${className}`} onSubmit={onSubmit}>
       {fields.map(i => (
         <div key={i.id} className="flex gap-2">
           {i.label ? <label className="shrink-0" htmlFor={i.id}>{i.label}</label> : null}

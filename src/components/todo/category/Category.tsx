@@ -26,7 +26,7 @@ export const Category:FC<CategoryProps> = ({
   return (
     <div className="flex flex-col rounded-xl p-2 bg-zinc-900 max-h-full">
       <div className="p-2">
-        <EditCategory refId={id} defaultValue={title} />
+        <EditCategory refId={id} initialValue={title} />
       </div>
       {tickets.length ?
         <div ref={ticketsContainerRef} className="flex flex-col p-1 mt-1 gap-2 overflow-y-auto max-h-full mb-2">

@@ -32,7 +32,7 @@ export const Ticket:FC<TicketProps> = ({
       </Modal>
       <div className="rounded-lg bg-zinc-700 flex items-center justify-between p-2 group cursor-pointer" onClick={handleClick}>
         {!isEditing ? <p className="text-white select-none">{title}</p> : null}
-        <EditTicket refId={id} defaultValue={title} onToggle={setIsEditing} />
+        <EditTicket refId={id} initialValue={title} onToggle={setIsEditing} />
       </div>
     </>
     )
