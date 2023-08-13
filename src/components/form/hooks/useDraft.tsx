@@ -1,10 +1,8 @@
-import { useCallback, useEffect, useMemo } from "react"
-
-const isomorphicLocalStorage = typeof window !== 'undefined' ? localStorage : undefined
+import { useCallback, useEffect, useState } from "react"
 
 type UseDraftArguments = {
-  canDraft: boolean
-  draftId?: string
+  canDraft?: boolean
+  draftId: string
   unsavedValue?: string
 }
 
@@ -13,20 +11,29 @@ export const useDraft = ({
   draftId,
   unsavedValue,
 }: UseDraftArguments) => {
-  const draft = useMemo<string | undefined>(() => {
-    if (typeof window === undefined) return
-    if (!canDraft || !draftId) return
-    const value = isomorphicLocalStorage?.getItem(`draft_${draftId}`)
-    return value || undefined
-  }, [canDraft, draftId])
+  const draftStorageKey = `draft_${draftId}`
+  const [draft, setDraft] = useState<string>()
 
-  const saveDraft = useCallback((value: string) => {
-    if (!canDraft) return
-    localStorage.setItem(`draft_${draftId}`, value)
-  }, [canDraft, draftId])
+  console.log(draftId, draft, unsavedValue)
 
   useEffect(() => {
     if (!canDraft) return
+    setDraft(localStorage.getItem(draftStorageKey) || undefined)
+  }, [canDraft, draftStorageKey])
+
+  const saveDraft = useCallback((value: string) => {
+    if (!canDraft) return
+    setDraft(value)
+    localStorage.setItem(draftStorageKey, value)
+  }, [canDraft, draftStorageKey])
+
+  const clearDraft = useCallback(() => {
+    if (!canDraft || !draft) return
+    localStorage.removeItem(draftStorageKey)
+    setDraft(undefined)
+  }, [canDraft, draftStorageKey, draft])
+
+  useEffect(() => {
     const handleBeforeUnload = () => {
       if (unsavedValue) saveDraft(unsavedValue)
     }
@@ -39,6 +46,7 @@ export const useDraft = ({
 
   return {
     draft,
-    saveDraft
+    saveDraft,
+    clearDraft
   }
 }

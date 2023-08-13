@@ -7,6 +7,7 @@ import { InlineFormProps } from "./types"
 import { InlineFormField } from "./InlineFormField"
 import { useForm } from "@/components/form/hooks/useForm"
 import { InlineDisplayField } from "./InlineDisplayField"
+import { useDraft } from "@/components/form/hooks/useDraft"
 
 export const InlineForm:FC<InlineFormProps> = ({
   className='',
@@ -24,24 +25,29 @@ export const InlineForm:FC<InlineFormProps> = ({
   clickEventHandler,
   canDraft
 }) => {
-  const { formValues, handleSubmit, setFieldValue, hasUnsavedValue, resetToInitalValue } = useForm({initialValues: {
+  const { formValues, handleSubmit, setFieldValue, hasUnsavedValue, handleReset: resetForm } = useForm({initialValues: {
     [fieldId]: initialValue
   }, clearAfterSubmit})
-  const [showInput, setShowInput] = useState(false)
+  const [showForm, setShowForm] = useState(false)
   const [processing, setProcessing] = useState(false)
+  const { draft, clearDraft } = useDraft({
+    canDraft,
+    draftId: `${refId}_${fieldId}`,
+    unsavedValue: hasUnsavedValue ? formValues?.[fieldId] : undefined
+  })
 
   useEffect(() => {
     setFieldValue(fieldId, initialValue)
   }, [setFieldValue, initialValue, fieldId])
   
-  const handleHideInput = useCallback(() => {
-    setShowInput(false)
-  }, [])
+  const handleHideForm = useCallback(() => {
+    setShowForm(false)
+    resetForm(true)
+  }, [resetForm])
 
-  const handleToggleInput = useCallback(() => {
-    setShowInput(!showInput)
-    if (!showInput) resetToInitalValue()
-  }, [resetToInitalValue, showInput])
+  const handleShowForm = useCallback(() => {
+    setShowForm(true)
+  }, [])
 
   const onSubmit = useCallback((values: FormValue) => {
     if (processing) return
@@ -52,46 +58,42 @@ export const InlineForm:FC<InlineFormProps> = ({
       ...queryParams
     }).then((resp) => {
       onSuccess?.(resp)
-      setShowInput(false)
+      setShowForm(false)
+      clearDraft()
     }).finally(() => {
       setProcessing(false)
     })
-  }, [processing, query, queryParams, refId, onSuccess])
+  }, [processing, query, queryParams, refId, onSuccess, clearDraft])
 
   const handleLoadDraft = useCallback((value: string) => {
     setFieldValue(fieldId, value)
-    setShowInput(true)
+    setShowForm(true)
   }, [fieldId, setFieldValue])
 
   useEffect(() => {
-    onToggle?.(showInput)
-  }, [showInput, onToggle])
+    onToggle?.(showForm)
+  }, [showForm, onToggle])
 
   return (
     <>
       <InlineDisplayField
-        show={!showInput}
-        refId={refId}
-        fieldId={fieldId}
-        formValues={formValues}
+        show={!showForm}
         render={render}
         clickEventHandler={clickEventHandler}
-        handleToggleInput={handleToggleInput}
-        hasUnsavedValue={hasUnsavedValue}
-        canDraft={canDraft}
+        onShow={handleShowForm}
+        draft={draft}
         onLoadDraft={handleLoadDraft}
       />
       <InlineFormField
         formClassName={appendNewClasses("", [className])}
-        show={showInput}
+        show={showForm}
         fieldId={fieldId}
-        handleToggleInput={handleToggleInput}
+        onHide={handleHideForm}
         setFieldValue={setFieldValue}
         formValues={formValues}
         onSubmit={handleSubmit(onSubmit)}
         inputType={inputType}
         required={required}
-        onHideInput={handleHideInput}
         processing={processing}
       />
     </>

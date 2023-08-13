@@ -16,9 +16,8 @@ type InlineFormFieldProps = {
   required: Field['required']
   formValues: FormProps['formValues']
   setFieldValue: FormProps['setFieldValue']
-  handleToggleInput: () => void
+  onHide: () => void
   show: boolean
-  onHideInput: () => void
   onSubmit: FormProps['onSubmit']
   processing: boolean
 }
@@ -31,14 +30,13 @@ export const InlineFormField:FC<InlineFormFieldProps> = ({
   formValues,
   setFieldValue,
   show,
-  handleToggleInput,
-  onHideInput,
+  onHide,
   onSubmit,
   processing
 }) => {
   const formRef = useRef(null)
-  useDetectOutsideClick(formRef, onHideInput)
-  useDetectKeyPress(undefined, onHideInput)
+  useDetectOutsideClick(formRef, onHide)
+  useDetectKeyPress(undefined, onHide)
   const fields = useMemo<FormProps['fields']>(() => ([{
     id: fieldId,
     inputType,
@@ -53,7 +51,7 @@ export const InlineFormField:FC<InlineFormFieldProps> = ({
       setFieldValue={setFieldValue}
       formValues={formValues}
       onSubmit={onSubmit}
-      actions={[<CancelAction key={'cancelAction'} onCancel={handleToggleInput} />]}
+      actions={[<CancelAction key={'cancelAction'} onCancel={onHide} />]}
       submitLabel={processing ? "..." : undefined}
       autofocusField={fieldId}
     />

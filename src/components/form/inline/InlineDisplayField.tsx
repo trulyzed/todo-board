@@ -3,47 +3,31 @@
 import { FC, useCallback, useMemo } from "react"
 import { InlineFormProps, RenderProps } from "./types"
 import { Pencil } from "@phosphor-icons/react"
-import { useDraft } from "@/components/form/hooks/useDraft"
-import { FormProps } from "@/components/form/types"
 
 type InlineDisplayFieldProps = {
   show: boolean
-  refId: InlineFormProps['refId']
-  fieldId: InlineFormProps['fieldId']
-  formValues: FormProps['formValues']
   render: InlineFormProps['render']
-  handleToggleInput: () => void
+  onShow: () => void
   clickEventHandler: InlineFormProps['clickEventHandler']
-  hasUnsavedValue: boolean
-  canDraft?: boolean
+  draft?: string
   onLoadDraft?: (value: string) => void
 }
 
 export const InlineDisplayField:FC<InlineDisplayFieldProps> = ({
   show,
-  refId,
-  fieldId,
-  formValues,
   render,
   clickEventHandler,
-  handleToggleInput,
-  hasUnsavedValue,
-  canDraft=false,
+  onShow,
+  draft,
   onLoadDraft,
 }) => {
-  const { draft } = useDraft({
-    canDraft,
-    draftId: `${refId}_${fieldId}`,
-    unsavedValue: hasUnsavedValue ? formValues?.[fieldId] : undefined
-  })
-
   const renderProps: RenderProps = useMemo(() => ({
     onClick: (event) => {
       clickEventHandler?.(event)
-      handleToggleInput()
+      onShow()
     },
     className: 'cursor-pointer',
-  }), [clickEventHandler, handleToggleInput])
+  }), [clickEventHandler, onShow])
 
   const handleLoadDraft = useCallback(() => {
     if (!draft || !onLoadDraft) return

@@ -30,13 +30,9 @@ export const useForm = (options?: UseFormArguments) => {
     if (success) handleSubmitSuccess()
   }, [formValues, handleSubmitSuccess])
 
-  const handleReset = useCallback(() => {
-    setFormValues(undefined)
+  const handleReset = useCallback((resetToInitialValue?: boolean) => {
+    setFormValues(resetToInitialValue ? initialValues : undefined)
     setHasUnsavedValue(false)
-  }, [])
-
-  const resetToInitalValue = useCallback(() => {
-    setFormValues(initialValues)
   }, [initialValues])
 
   return {
@@ -45,6 +41,5 @@ export const useForm = (options?: UseFormArguments) => {
     handleSubmit,
     hasUnsavedValue,
     handleReset,
-    resetToInitalValue
   }
 }
