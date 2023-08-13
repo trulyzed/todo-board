@@ -5,11 +5,11 @@ import { EditTicket } from "./EditTicket"
 import { TicketDetails } from "./ticketDetails/TicketDetails"
 import { Modal } from "@/components/layout/modal/Modal"
 
-type TicketProps = {
+type TicketCardProps = {
   title: string
   id: string
 }
-export const Ticket:FC<TicketProps> = ({
+export const TicketCard:FC<TicketCardProps> = ({
   title,
   id,
 }) => {

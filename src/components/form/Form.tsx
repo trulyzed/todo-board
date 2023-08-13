@@ -5,6 +5,7 @@ import { FormProps } from "./types"
 import { TextInput } from "./input/TextInput"
 import { DateInput } from "./input/DateInput"
 import { TextAreaInput } from "./input/TextAreaInput"
+import { Button } from "@/components/interactive/Button"
 
 export const Form = forwardRef<HTMLFormElement, FormProps>(({
   className,
@@ -56,7 +57,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({
         </div>
       ))}
       <div className="flex items-center gap-1">
-        <button className="self-start bg-blue-800 rounded py-1 px-2 text-white" type="submit">{submitLabel}</button>
+        <Button type="submit">{submitLabel}</Button>
         {actions}
       </div>
     </form>

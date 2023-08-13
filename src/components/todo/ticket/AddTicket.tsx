@@ -6,6 +6,7 @@ import { createTicket } from "@/queries/client/ticket"
 import { InlineForm } from "@/components/form/inline/InlineForm"
 import { Plus } from "@phosphor-icons/react"
 import { appendNewClasses } from "@/lib/utils/classNameUtils"
+import { Button } from "@/components/interactive/Button"
 
 type AddTicketProps = {
   onSuccess?: () => void
@@ -37,10 +38,10 @@ export const AddTicket:FC<AddTicketProps> = ({
       required
       onSuccess={handleSuccessfulCreate}
       render={(renderProps) => (
-        <button {...renderProps} className={appendNewClasses(`self-start rounded bg-blue-800 px-2 py-1 text-white flex items-center gap-2 shrink-0`, [renderProps.className])}>
+        <Button {...renderProps} className={appendNewClasses(``, [renderProps.className])}>
           <Plus weight="bold" />
           {"Add Ticket"}
-        </button>
+        </Button>
       )}
     />
   )

@@ -3,6 +3,7 @@
 import { FC, useCallback, useMemo } from "react"
 import { InlineFormProps, RenderProps } from "./types"
 import { Pencil } from "@phosphor-icons/react"
+import { Button } from "@/components/interactive/Button"
 
 type InlineDisplayFieldProps = {
   show: boolean
@@ -40,10 +41,10 @@ export const InlineDisplayField:FC<InlineDisplayFieldProps> = ({
         {render(renderProps)}
       </div>
       {draft ?
-        <button className="text-red flex items-center gap-1 px-[4px] py-[2px] rounded ml-auto text-xs text-yellow-400 font-bold uppercase bg-yellow-900" onClick={handleLoadDraft}>
+        <Button className="gap-1 px-[4px] py-[2px] text-xs text-yellow-400 uppercase bg-yellow-900" onClick={handleLoadDraft}>
           Draft
           <Pencil weight="bold" />
-        </button>
+        </Button>
       : null}
     </div>
   ) : null

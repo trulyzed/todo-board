@@ -1,18 +1,18 @@
 'use client'
 
 import { FC, useCallback, useRef } from "react"
-import { Ticket } from "@/components/todo/ticket/Ticket"
+import { TicketCard } from "@/components/todo/ticket/TicketCard"
 import { EditCategory } from "./EditCategory"
 import { Ticket as TicketType } from "@prisma/client"
 import { AddTicket } from "../ticket/AddTicket"
 
-type CategoryProps = {
+type CategoryCardProps = {
   id: string
   title: string
   tickets: TicketType[]
 }
 
-export const Category:FC<CategoryProps> = ({
+export const CategoryCard:FC<CategoryCardProps> = ({
   id,
   title,
   tickets=[],
@@ -29,8 +29,8 @@ export const Category:FC<CategoryProps> = ({
         <EditCategory refId={id} initialValue={title} />
       </div>
       {tickets.length ?
-        <div ref={ticketsContainerRef} className="flex flex-col p-1 mt-1 gap-2 overflow-y-auto max-h-full mb-2">
-          {tickets.map((i, index) => <Ticket key={index} {...i} />)}
+        <div ref={ticketsContainerRef} className="flex flex-col p-1 mt-1 gap-2 overflow-y-auto max-h-full mb-2 vertical-scrollbar">
+          {tickets.map((i, index) => <TicketCard key={index} {...i} />)}
         </div>
       : null}
       <AddTicket onSuccess={handleSuccessCreate} refId={id} />

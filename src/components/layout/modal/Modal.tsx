@@ -1,10 +1,11 @@
 'use client'
 
-import { FC, ReactNode, useCallback, useEffect, useRef } from "react";
+import { FC, ReactNode, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { X } from "@phosphor-icons/react";
 import { useDetectKeyPress } from "@/hooks/useDetectKeyPress";
 import { useDetectOutsideClick } from "@/hooks/useDetectOutsideClick";
+import { Button } from "@/components/interactive/Button";
 
 export type ModalProps = {
   title?: ReactNode
@@ -33,9 +34,9 @@ export const Modal: FC<ModalProps> = ({
       <div className="bg-slate-900/75 absolute inset-0 m-auto overflow-y-auto flex items-center justify-center">
         <div ref={modalRef} className="w-[50vw] h-[50vh] bg-slate-200 rounded-xl drop-shadow-md">
           <div className="relative self-end">
-            <button className="absolute right-0 bg-slate-300 rounded p-2 m-2" onClick={handleClose}>
+            <Button onClick={handleClose} className="absolute right-0 bg-slate-300 p-2 m-2">
               <X weight="bold" />
-            </button>
+            </Button>
           </div>
           <div className="p-5 mt-6">
             {children}
