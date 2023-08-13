@@ -1,11 +1,11 @@
 'use client'
 
-import { FC, useMemo } from "react"
+import { FC, ReactNode, useMemo } from "react"
 import { InlineForm } from "@/components/form/inline/InlineForm"
 import { editTicket } from "@/queries/client/ticket"
 import { Subtitles, Article, Calendar } from "@phosphor-icons/react"
-import { TicketField } from "./TicketField"
-import { InlineFormProps } from "@/components/form/inline/types"
+import { InlineFormProps, RenderProps } from "@/components/form/inline/types"
+import { appendNewClasses } from "@/lib/utils/classNameUtils"
 
 type EditTicketDetailsProps = {
   id: string
@@ -40,7 +40,7 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
       render: (renderProps) => <TicketField {...renderProps} value={description} icon={<Article weight="bold" />} />,
       initialValue: description,
       onSuccess: onSuccess,
-      enableDraft: true,
+      canDraft: true,
     },
     {
       fieldId: "expiresAt",
@@ -56,6 +56,24 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
   return (
     <div className="flex flex-col gap-3">
       {fields.map((field) => <InlineForm key={field.fieldId} {...field} />)}
+    </div>
+  )
+}
+
+
+type TicketFieldProps = {
+  value: ReactNode
+  icon: ReactNode
+} & RenderProps
+
+export const TicketField:FC<TicketFieldProps> = ({
+  value,
+  icon,
+  ...otherProps
+}) => {
+  return (
+    <div {...otherProps} className={appendNewClasses("flex items-center bg-gray-200 rounded p-2 gap-2", [otherProps.className])}>
+      {icon} {value}
     </div>
   )
 }

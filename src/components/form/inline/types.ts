@@ -20,5 +20,5 @@ export type InlineFormProps = {
   clearAfterSubmit?: boolean
   onToggle?: (status: boolean) => void
   clickEventHandler?: (event: Event) => void
-  enableDraft?: boolean
+  canDraft?: boolean
 }

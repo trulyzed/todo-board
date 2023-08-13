@@ -16,7 +16,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({
   actions,
   autofocusField
 }, ref) => {
-  const handleChange = useCallback((field: string) => (value: string) => setFieldValue(field, value), [setFieldValue])
+  const handleChange = useCallback((field: string) => (value: string) => setFieldValue(field, value, true), [setFieldValue])
 
   return (
     <form ref={ref} className={`flex flex-col gap-2 ${className}`} onSubmit={onSubmit}>

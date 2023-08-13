@@ -29,6 +29,6 @@ export const TextAreaInput:FC<Omit<Field, "inputType"> & {
       required={required}
       autoFocus={autoFocus}
       rows={10}
-    ></textarea>
+    />
   )
 }

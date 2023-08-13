@@ -21,5 +21,5 @@ export type FormProps = {
   actions?: ReactNode
   autofocusField?: Field['id']
   formValues?: FormValue
-  setFieldValue: (field: string, value: string) => void
+  setFieldValue: (field: string, value?: string, changeFromInput?: boolean) => void
 }

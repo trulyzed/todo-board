@@ -1,45 +1,62 @@
-import { FC, useMemo } from "react"
-import { InlineFormProps, RenderProps } from "./types"
-import { useDraftValue } from "@/hooks/useDraftValue"
-import { Eye } from "@phosphor-icons/react"
+'use client'
+
+import { FC, useMemo, useRef } from "react"
+import { InlineFormProps } from "./types"
+import { Form } from "@/components/form/Form"
+import { appendNewClasses } from "@/lib/utils/classNameUtils"
+import { Field, FormProps } from "@/components/form/types"
+import { CancelAction } from "./CancelAction"
+import { useDetectOutsideClick } from "@/hooks/useDetectOutsideClick"
+import { useDetectKeyPress } from "@/hooks/useDetectKeyPress"
 
 type InlineFormFieldProps = {
-  render: InlineFormProps['render']
-  clickEventHandler: InlineFormProps['clickEventHandler']
-  handleToggleInput: () => void
-  enableDraft?: InlineFormProps['enableDraft']
-  refId: InlineFormProps['refId']
+  formClassName?: string
   fieldId: InlineFormProps['fieldId']
+  inputType: Field['inputType']
+  required: Field['required']
+  formValues: FormProps['formValues']
+  setFieldValue: FormProps['setFieldValue']
+  handleToggleInput: () => void
+  show: boolean
+  onHideInput: () => void
+  onSubmit: FormProps['onSubmit']
+  processing: boolean
 }
 
 export const InlineFormField:FC<InlineFormFieldProps> = ({
-  refId,
+  formClassName='',
   fieldId,
-  render,
-  clickEventHandler,
+  inputType,
+  required,
+  formValues,
+  setFieldValue,
+  show,
   handleToggleInput,
-  enableDraft,
+  onHideInput,
+  onSubmit,
+  processing
 }) => {
-  const draft = useDraftValue(!!enableDraft, `${refId}_${fieldId}`)
-  const renderProps: RenderProps = useMemo(() => ({
-    onClick: (event) => {
-      clickEventHandler?.(event)
-      handleToggleInput()
-    },
-    className: 'cursor-pointer',
-  }), [clickEventHandler, handleToggleInput])
+  const formRef = useRef(null)
+  useDetectOutsideClick(formRef, onHideInput)
+  useDetectKeyPress(undefined, onHideInput)
+  const fields = useMemo<FormProps['fields']>(() => ([{
+    id: fieldId,
+    inputType,
+    required,
+  }]), [fieldId, inputType, required])
 
-  return (
-    <div className="flex items-center gap-2">
-      <div className="grow">
-        {render(renderProps)}
-      </div>
-      {draft ?
-        <button className="text-red flex items-center gap-1 ml-auto text-sm text-blue-800 font-bold">
-          <Eye weight="bold" />
-          Draft
-        </button>
-      : null}
-    </div>
-  )
+  return show ? (
+    <Form
+      ref={formRef}
+      className={appendNewClasses("", [formClassName])}
+      fields={fields}
+      setFieldValue={setFieldValue}
+      formValues={formValues}
+      onSubmit={onSubmit}
+      actions={[<CancelAction key={'cancelAction'} onCancel={handleToggleInput} />]}
+      submitLabel={processing ? "..." : undefined}
+      autofocusField={fieldId}
+    />
+  ) : null
 }
+

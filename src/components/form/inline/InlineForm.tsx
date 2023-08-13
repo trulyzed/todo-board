@@ -1,15 +1,12 @@
 'use client'
 
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { FormProps, FormValue } from "@/components/form/types"
-import { Form } from "@/components/form/Form"
+import { FC, useCallback, useEffect, useState } from "react"
+import { FormValue } from "@/components/form/types"
 import { appendNewClasses } from "@/lib/utils/classNameUtils"
-import { CancelAction } from "./CancelAction"
-import { useDetectOutsideClick } from "@/hooks/useDetectOutsideClick"
-import { useDetectKeyPress } from "@/hooks/useDetectKeyPress"
 import { InlineFormProps } from "./types"
 import { InlineFormField } from "./InlineFormField"
 import { useForm } from "@/components/form/hooks/useForm"
+import { InlineDisplayField } from "./InlineDisplayField"
 
 export const InlineForm:FC<InlineFormProps> = ({
   className='',
@@ -25,10 +22,9 @@ export const InlineForm:FC<InlineFormProps> = ({
   clearAfterSubmit,
   onToggle,
   clickEventHandler,
-  enableDraft
+  canDraft
 }) => {
-  const formRef = useRef(null)
-  const { formValues, handleSubmit, setFieldValue } = useForm({initialValues: {
+  const { formValues, handleSubmit, setFieldValue, hasUnsavedValue, resetToInitalValue } = useForm({initialValues: {
     [fieldId]: initialValue
   }, clearAfterSubmit})
   const [showInput, setShowInput] = useState(false)
@@ -37,23 +33,15 @@ export const InlineForm:FC<InlineFormProps> = ({
   useEffect(() => {
     setFieldValue(fieldId, initialValue)
   }, [setFieldValue, initialValue, fieldId])
-
-  const fields = useMemo<FormProps['fields']>(() => ([{
-    id: fieldId,
-    inputType,
-    required,
-  }]), [fieldId, inputType, required])
   
   const handleHideInput = useCallback(() => {
     setShowInput(false)
   }, [])
 
-  useDetectOutsideClick(formRef, handleHideInput)
-  useDetectKeyPress(undefined, handleHideInput)
-
   const handleToggleInput = useCallback(() => {
-    setShowInput(prevVal => !prevVal)
-  }, [])
+    setShowInput(!showInput)
+    if (!showInput) resetToInitalValue()
+  }, [resetToInitalValue, showInput])
 
   const onSubmit = useCallback((values: FormValue) => {
     if (processing) return
@@ -70,48 +58,42 @@ export const InlineForm:FC<InlineFormProps> = ({
     })
   }, [processing, query, queryParams, refId, onSuccess])
 
-    // // Save as draft before unload if values are changed
-    // useEffect(() => {
-    //   if (!onSaveDraft) return
-    //   const handleBeforeUnload = () => {
-    //     if (hasChangedRef.current) onSaveDraft(formValues)
-    //   }
-  
-    //   window.addEventListener('beforeunload', handleBeforeUnload)
-    //   return () => {
-    //     window.removeEventListener('beforeunload', handleBeforeUnload)
-    //   }
-    // }, [formValues, onSaveDraft])
-
-  // const handleSaveDraft: FormProps['onSaveDraft'] = useCallback((values?: FormValue) => {
-  //   if (!enableDraft) return
-  //   if (values?.[fieldId]) localStorage.setItem(`draft_${refId}_${fieldId}`, values[fieldId])
-  // }, [enableDraft, fieldId, refId])
+  const handleLoadDraft = useCallback((value: string) => {
+    setFieldValue(fieldId, value)
+    setShowInput(true)
+  }, [fieldId, setFieldValue])
 
   useEffect(() => {
     onToggle?.(showInput)
   }, [showInput, onToggle])
 
-  return !showInput ?
-    <InlineFormField
-      refId={refId}
-      fieldId={fieldId}
-      clickEventHandler={clickEventHandler}
-      handleToggleInput={handleToggleInput}
-      render={render}
-      enableDraft={enableDraft}
-    />
-    : <Form
-        ref={formRef}
-        className={appendNewClasses("", [className])}
-        fields={fields}
+  return (
+    <>
+      <InlineDisplayField
+        show={!showInput}
+        refId={refId}
+        fieldId={fieldId}
+        formValues={formValues}
+        render={render}
+        clickEventHandler={clickEventHandler}
+        handleToggleInput={handleToggleInput}
+        hasUnsavedValue={hasUnsavedValue}
+        canDraft={canDraft}
+        onLoadDraft={handleLoadDraft}
+      />
+      <InlineFormField
+        formClassName={appendNewClasses("", [className])}
+        show={showInput}
+        fieldId={fieldId}
+        handleToggleInput={handleToggleInput}
         setFieldValue={setFieldValue}
         formValues={formValues}
         onSubmit={handleSubmit(onSubmit)}
-        actions={[<CancelAction key={'cancelAction'} onCancel={handleToggleInput} />]}
-        submitLabel={processing ? "..." : undefined}
-        autofocusField={fieldId}
+        inputType={inputType}
+        required={required}
+        onHideInput={handleHideInput}
+        processing={processing}
       />
+    </>
+  )
 }
-
-//         onSaveDraft={handleSaveDraft}
