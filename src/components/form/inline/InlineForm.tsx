@@ -23,7 +23,7 @@ export const InlineForm:FC<InlineFormProps> = ({
   clearAfterSubmit,
   onToggle,
   clickEventHandler,
-  canDraft
+  canDraft,
 }) => {
   const { formValues, handleSubmit, setFieldValue, hasUnsavedValue, handleReset: resetForm } = useForm({initialValues: {
     [fieldId]: initialValue
@@ -75,6 +75,12 @@ export const InlineForm:FC<InlineFormProps> = ({
   useEffect(() => {
     onToggle?.(showForm)
   }, [showForm, onToggle])
+
+  useEffect(() => {
+    return () => {
+      if (unsavedValue) saveDraft(unsavedValue)
+    }
+  }, [unsavedValue, saveDraft])
 
   return (
     <>

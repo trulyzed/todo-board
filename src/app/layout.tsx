@@ -3,11 +3,12 @@ import { AuthProvider } from '@/context/AuthProvider'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Navbar } from '@/components/layout/navbar/Navbar'
+import { DataContextProvider } from '@/context/dataProvider/DataProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Todo Board',
+  title: 'NextJS',
   description: 'A simple todo board application',
 }
 
@@ -22,7 +23,9 @@ export default function RootLayout({
         <AuthProvider>
           <Navbar />
           <main className='flex h-content'>
-            {children}
+            <DataContextProvider>
+              {children}
+            </DataContextProvider>
           </main>
         </AuthProvider>
         <div id='modal-root' />

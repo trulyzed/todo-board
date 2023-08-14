@@ -23,4 +23,5 @@ export type FormProps = {
   autofocusField?: Field['id']
   formValues?: FormValue
   setFieldValue: (field: string, value?: string, changeFromInput?: boolean) => void
+  processing?: boolean
 }

@@ -49,7 +49,7 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
       query: editTicket,
       render: (renderProps) => <TicketField {...renderProps} value={expiresAt} icon={<Calendar weight="bold" className="shrink-0" />} />,
       initialValue: expiresAt,
-      onSuccess: onSuccess
+      onSuccess: onSuccess,
     },
   ]), [onSuccess, id, title, description, expiresAt])
 

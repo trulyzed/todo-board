@@ -1,21 +1,19 @@
 'use client'
 
-import { useCallback, useTransition } from "react"
-import { useRouter } from "next/navigation"
+import { useCallback, useContext } from "react"
 import { createCategory } from "@/queries/client/category"
 import { InlineForm } from "@/components/form/inline/InlineForm"
 import { Plus } from "@phosphor-icons/react"
 import { Button } from "@/components/interactive/Button"
+import { Category } from "@prisma/client"
+import { DataContext } from "@/context/dataProvider/DataProvider"
 
 export const AddCategory = () => {
-  const router = useRouter()
-  const [isPendingTransition, startTransition] = useTransition()
+  const { addCategory } = useContext(DataContext)
 
-  const handleSuccessfulCreate = useCallback(() => {
-    startTransition(() => {
-      router.refresh()
-    })
-  }, [router])
+  const handleSuccessfulCreate = useCallback((data: Category) => {
+    addCategory(data)
+  }, [addCategory])
 
   return (
     <InlineForm
@@ -30,6 +28,7 @@ export const AddCategory = () => {
           {"Add Category"}
         </Button>
       )}
+      clearAfterSubmit
     />
   )
 }

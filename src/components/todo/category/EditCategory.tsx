@@ -1,10 +1,11 @@
 'use client'
 
-import { editCategory } from "@/queries/client/category"
-import { FC, useCallback, useTransition } from "react"
+import { FC, useCallback, useContext } from "react"
+import { editCategory as editCategoryAPI } from "@/queries/client/category"
 import { InlineForm } from "@/components/form/inline/InlineForm"
-import { useRouter } from "next/navigation"
 import { appendNewClasses } from "@/lib/utils/classNameUtils"
+import { DataContext } from "@/context/dataProvider/DataProvider"
+import { Category } from "@prisma/client"
 
 type EditCategoryProps = {
   initialValue: string
@@ -15,21 +16,18 @@ export const EditCategory:FC<EditCategoryProps> = ({
   initialValue,
   refId
 }) => {
-  const router = useRouter()
-  const [isPendingTransition, startTransition] = useTransition()
+  const { editCategory } = useContext(DataContext)
 
-  const handleSuccessfulEdit = useCallback(() => {
-    startTransition(() => {
-      router.refresh()
-    })
-  }, [router])
+  const handleSuccessfulEdit = useCallback((data: Category) => {
+    editCategory(refId, data)
+  }, [editCategory, refId])
 
   return (
     <InlineForm
       className=''
       initialValue={initialValue}
       refId={refId}
-      query={editCategory}
+      query={editCategoryAPI}
       fieldId={'title'}
       required
       onSuccess={handleSuccessfulEdit}

@@ -4,7 +4,8 @@ import { ComponentProps, HTMLProps, ReactNode, forwardRef } from "react"
 export type ButtonProps = {
   className?: string
   children: ReactNode
-  variant?: 'positive' | 'danger' | 'ghost'
+  variant?: 'positive' | 'danger'
+  link?: boolean
 } & ComponentProps<'button'>
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
@@ -12,6 +13,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   children,
   variant='positive',
   type='button',
+  link,
   ...otherProps
 }, ref) => {
   return (
@@ -20,7 +22,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
       {...otherProps}
       className={appendNewClasses(`flex items-center gap-2 rounded px-2 py-1 text-white font-semibold`, [
         className,
-        variant === 'ghost' ? '' : variant === 'positive' ? "bg-blue-800" : "bg-red-800"
+        !link && (variant === 'positive' ? "bg-blue-800" : variant === 'danger' ? "bg-red-700" : '') || '',
+        link && (variant === 'positive' ? "text-blue-800" : variant === 'danger' ? "text-red-700" : '') || '',
       ])}
       type={type}>
       {children}

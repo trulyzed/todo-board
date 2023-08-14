@@ -7,6 +7,7 @@ import { DateInput } from "./input/DateInput"
 import { TextAreaInput } from "./input/TextAreaInput"
 import { Button } from "@/components/interactive/Button"
 import { appendNewClasses } from "@/lib/utils/classNameUtils"
+import { Spinner } from "@/components/layout/loader/Spinner"
 
 export const Form = forwardRef<HTMLFormElement, FormProps>(({
   className,
@@ -17,7 +18,8 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({
   onSubmit,
   submitLabel="Save",
   actions,
-  autofocusField
+  autofocusField,
+  processing
 }, ref) => {
   const handleChange = useCallback((field: string) => (value: string) => setFieldValue(field, value, true), [setFieldValue])
 
@@ -59,7 +61,9 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({
         </div>
       ))}
       <div className="flex items-center gap-1">
-        <Button type="submit">{submitLabel}</Button>
+        <Button type="submit" disabled={processing}>
+          {processing ? <Spinner className="w-4 h-4" /> : submitLabel}
+        </Button>
         {actions}
       </div>
     </form>

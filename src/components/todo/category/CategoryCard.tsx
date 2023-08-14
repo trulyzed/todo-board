@@ -4,7 +4,7 @@ import { FC, useCallback, useRef } from "react"
 import { TicketCard } from "@/components/todo/ticket/TicketCard"
 import { EditCategory } from "./EditCategory"
 import { Ticket as TicketType } from "@prisma/client"
-import { AddTicket } from "../ticket/AddTicket"
+import { AddTicket } from "@/components/todo/ticket/AddTicket"
 
 type CategoryCardProps = {
   id: string

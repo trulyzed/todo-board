@@ -37,6 +37,7 @@ export const InlineFormField:FC<InlineFormFieldProps> = ({
   const formRef = useRef(null)
   useDetectOutsideClick(formRef, onHide)
   useDetectKeyPress(undefined, onHide)
+
   const fields = useMemo<FormProps['fields']>(() => ([{
     id: fieldId,
     inputType,
@@ -53,8 +54,8 @@ export const InlineFormField:FC<InlineFormFieldProps> = ({
       formValues={formValues}
       onSubmit={onSubmit}
       actions={[<CancelAction key={'cancelAction'} onCancel={onHide} />]}
-      submitLabel={processing ? "..." : undefined}
       autofocusField={fieldId}
+      processing={processing}
     />
   ) : null
 }

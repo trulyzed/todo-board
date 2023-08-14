@@ -1,5 +1,6 @@
 import { apiClient } from "@/lib/api/apiClient"
 import { parseDate } from "@/lib/utils/dateUtils"
+import { Ticket } from "@prisma/client"
 
 export const getTicket = async (payload: any) => {
   const { data } = await apiClient(undefined, true).get(`/ticket`, {
@@ -9,7 +10,7 @@ export const getTicket = async (payload: any) => {
   })
 
   try {
-    return JSON.parse(data || null)
+    return JSON.parse(data || null) as Ticket
   } catch (error) {
     throw error
   }
@@ -19,7 +20,7 @@ export const createTicket = async (payload: any) => {
   const { data } = await apiClient(undefined, true).post('/ticket', JSON.stringify(payload))
 
   try {
-    return JSON.parse(data || null)
+    return JSON.parse(data || null) as Ticket
   } catch (error) {
     throw error
   }
@@ -33,7 +34,7 @@ export const editTicket = async (payload: any) => {
   const { data } = await apiClient(undefined, true).patch('/ticket/', JSON.stringify(modifiedPayload))
 
   try {
-    return JSON.parse(data || null)
+    return JSON.parse(data || null) as Ticket
   } catch (error) {
     throw error
   }
