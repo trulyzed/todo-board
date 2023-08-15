@@ -33,8 +33,8 @@ export const editCategory = async (payload: any) => {
 }
 
 
-export const updateCategoryOrders = async (payload: any) => {
-  const { data } = await apiClient(undefined, true).patch('/board/', JSON.stringify(payload))
+export const changeCategoryOrders = async (payload: any) => {
+  const { data } = await apiClient(undefined, true).patch('/change-order/categories/', JSON.stringify(payload))
 
   try {
     return JSON.parse(data || null) as Category[]

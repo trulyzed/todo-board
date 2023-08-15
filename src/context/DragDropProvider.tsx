@@ -4,6 +4,7 @@ import { FC, MutableRefObject, ReactNode, createContext, useRef } from "react"
 
 type DragDropValue = {
   activeDragId?: MutableRefObject<string | null>
+  initiatorContext?: MutableRefObject<any | null>
 }
 
 type DragDropProviderProps = {
@@ -11,7 +12,8 @@ type DragDropProviderProps = {
 }
 
 const initialValue: DragDropValue = {
-  activeDragId: undefined
+  activeDragId: undefined,
+  initiatorContext: undefined
 }
 
 export const DragDropContext = createContext<DragDropValue>({
@@ -22,9 +24,11 @@ export const DragDropProvider:FC<DragDropProviderProps> = ({
   children
 }) => {
   const activeDragId = useRef(null)
+  const initiatorContext = useRef(null)
   return (
     <DragDropContext.Provider value={{
-      activeDragId
+      activeDragId,
+      initiatorContext
     }}>
       {children}
     </DragDropContext.Provider>

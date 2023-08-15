@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     data: {
       title,
       boardId: board?.id,
-      order: await prisma.category.count() + 1
+      order: await prisma.category.count({where: {boardId: board.id}}) + 1
     }
   })
   return NextResponse.json(data)

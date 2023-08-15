@@ -5,9 +5,9 @@ export const initialData = {
         title: 'Board 1',
         categories: {
           create: [
-            {title: "To Do", order: 1},
-            {title: "Doing", order: 2},
-            {title: "Done", order: 3},
+            {title: "To Do", order: 0},
+            {title: "Doing", order: 1},
+            {title: "Done", order: 2},
           ]
         }
       }

@@ -4,7 +4,7 @@ import { useCallback, useContext, useEffect } from "react"
 import { AddCategory } from "@/components/todo/category/AddCategory"
 import { CategoryCard } from "@/components/todo/category/CategoryCard"
 import { DataContext } from "@/context/dataProvider/DataProvider"
-import { getCategories, updateCategoryOrders } from "@/queries/client/category"
+import { getCategories, changeCategoryOrders } from "@/queries/client/category"
 import { useQuery } from "@/hooks/useQuery"
 import { Category } from "@prisma/client"
 import { HomePageSkeleton } from "@/components/layout/loader/skeletons/HomePageSkeleton"
@@ -26,7 +26,7 @@ export default function Page() {
     newSortedCategories.splice(targetIndex, 0, source)
     const newCategories = newSortedCategories.map((i, index) => ({...i, order: index}))
     setCategories(newCategories)
-    updateCategoryOrders({orders: newCategories.map(i => ({id: i.id, order: i.order}))})
+    changeCategoryOrders({orders: newCategories.map(i => ({id: i.id, order: i.order}))})
   }, [sortedCategories, setCategories])
 
   const { dragListeners, dropListeners, getState } = useDragDrop({onDrop: handleDrag, identifier: 'category'})

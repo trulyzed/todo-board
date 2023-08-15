@@ -51,7 +51,8 @@ export async function POST(request: Request) {
   const ticket = await prisma.ticket.create({
     data: {
       title,
-      categoryId
+      categoryId,
+      order: await prisma.ticket.count({where: {categoryId}}) + 1
     }
   })
   return NextResponse.json(ticket)

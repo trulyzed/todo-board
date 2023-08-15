@@ -17,10 +17,11 @@ type DroppableAttributes = {
 export type UseDropArguments = {
   onDrop: (data: {sourceId: string; targetId: string;}) => void
   identifier: string
+  initiatorContext?: any
 }
 
-export const useDragDrop = ({onDrop, identifier}: UseDropArguments) => {
-  const { activeDragId } = useContext(DragDropContext)
+export const useDragDrop = ({onDrop, identifier, initiatorContext}: UseDropArguments) => {
+  const { activeDragId, initiatorContext: initiatorContextValue } = useContext(DragDropContext)
   const [state, setState] = useState<{
     [id: string]: {dragging?: boolean; entered?: boolean}
   }>()
@@ -39,11 +40,12 @@ export const useDragDrop = ({onDrop, identifier}: UseDropArguments) => {
     event.dataTransfer.effectAllowed = 'move'
     event.dataTransfer.setData('text/plain', id)
     if (activeDragId) activeDragId.current = id
+    if (initiatorContextValue) initiatorContextValue.current = initiatorContext
     setState(prevVal => ({
       ...prevVal,
       [id]: {...prevVal?.[id], dragging: true}
     }))
-  }, [activeDragId])
+  }, [activeDragId, initiatorContextValue, initiatorContext])
 
   const dragEndHandler: (id: string) => DraggableAttributes['onDragEnd'] = useCallback((id) => (event) => {
     if (isValidId(activeDragId?.current || '')) {

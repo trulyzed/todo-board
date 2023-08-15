@@ -39,3 +39,13 @@ export const editTicket = async (payload: any) => {
     throw error
   }
 }
+
+export const changeTicketOrders = async (payload: any) => {
+  const { data } = await apiClient(undefined, true).patch('/change-order/tickets/', JSON.stringify(payload))
+
+  try {
+    return JSON.parse(data || null) as Ticket[]
+  } catch (error) {
+    throw error
+  }
+}
