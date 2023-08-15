@@ -1,9 +1,10 @@
-import { useCallback, useState, DragEvent } from "react"
+import { useCallback, useState, DragEvent, DragEventHandler } from "react"
 
 export type DroppableAttributes = {
-  onDrop: (event: DragEvent) => void
-  onDragOver: (event: DragEvent) => void
-  onDragLeave: (event: DragEvent) => void
+  onDrop: DragEventHandler
+  onDragEnter: DragEventHandler
+  onDragOver: DragEventHandler
+  onDragLeave: DragEventHandler
 }
 
 export const useDroppable = () => {
@@ -11,30 +12,37 @@ export const useDroppable = () => {
     [id: string]: {draggingOver: boolean}
   }>()
 
-  const handleDrop: (id: string) => DroppableAttributes['onDrop'] = useCallback((id) => ({
-    dataTransfer
-  }) => {
-    dataTransfer.getData('text/plain')
+  const handleDrop: (id: string) => DroppableAttributes['onDrop'] = useCallback((id) => (event) => {
+    event.dataTransfer.getData('text/plain')
   }, [])
 
-  const handleDragOver: (id: string) => DroppableAttributes['onDragOver'] = useCallback((id) => ({
-    dataTransfer
-  }) => {
-    dataTransfer.setData('text/plain', id)
-    setState({[id]: {draggingOver: true}})
+  const handleDragEnter: (id: string) => DroppableAttributes['onDragEnter'] = useCallback((id) => (event) => {
+    event.preventDefault()
+    console.log(event.dataTransfer.getData('text/plain'), id)
   }, [])
 
-  const handleDragLeave: (id: string) => DroppableAttributes['onDragLeave'] = useCallback((id) => ({
-    dataTransfer
-  }) => {
-    setState({[id]: {draggingOver: false}})
+  const handleDragOver: (id: string) => DroppableAttributes['onDragOver'] = useCallback((id) => (event) => {
+    event.preventDefault()
+    setState(prevVal => ({
+      ...prevVal,
+      [id]: {draggingOver: true}
+    }))
+  }, [])
+
+  const handleDragLeave: (id: string) => DroppableAttributes['onDragLeave'] = useCallback((id) => (event) => {
+    event.preventDefault()
+    setState(prevVal => ({
+      ...prevVal,
+      [id]: {draggingOver: false}
+    }))
   }, [])
 
   const listeners: (id: string) => DroppableAttributes = useCallback((id: string) => ({
     onDrop: handleDrop(id),
+    onDragEnter: handleDragEnter(id),
     onDragOver: handleDragOver(id),
     onDragLeave: handleDragLeave(id),
-  }), [handleDrop, handleDragOver, handleDragLeave])
+  }), [handleDrop, handleDragEnter, handleDragOver, handleDragLeave,])
 
   const getState = useCallback((id: string) => {
     return state?.[id]

@@ -10,17 +10,19 @@ export const useDraggable = () => {
   const [state, setState] = useState<{
     [id: string]: {dragging: boolean}
   }>()
-  const handleDragStart: (id: string) => DraggableAttributes['onDragStart'] = useCallback((id) => ({
-    dataTransfer
-  }) => {
-    dataTransfer.setData('text/plain', id)
-    setState({[id]: {dragging: true}})
+  const handleDragStart: (id: string) => DraggableAttributes['onDragStart'] = useCallback((id) => (event) => {
+    event.dataTransfer.setData('text/plain', id)
+    setState(prevVal => ({
+      ...prevVal,
+      [id]: {dragging: true}
+    }))
   }, [])
 
-  const handleDragEnd: (id: string) => DraggableAttributes['onDragEnd'] = useCallback((id) => ({
-    dataTransfer
-  }) => {
-    setState({[id]: {dragging: false}})
+  const handleDragEnd: (id: string) => DraggableAttributes['onDragEnd'] = useCallback((id) => (event) => {
+    setState(prevVal => ({
+      ...prevVal,
+      [id]: {dragging: false}
+    }))
   }, [])
 
   const listeners: (id: string) => DraggableAttributes = useCallback((id: string) => ({

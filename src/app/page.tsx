@@ -28,8 +28,8 @@ export default function Page() {
     : (
       <div className="flex items-start grow p-4 gap-3 overflow-x-auto">
           {categories.map(i => (
-            <div key={i.id} className={appendClass("basis-64 shrink-0 grow-0 h-full", [getDroppableState(i.id)?.draggingOver ? "droppable-container" : ""])} {...droppableListeners(i.id)}>
-              <CategoryCard id={i.id} title={i.title} tickets={(i as CategoryWithTickets).tickets} {...draggableListeners(i.id)} className={getDraggableState(i.id)?.dragging ? "draggable-item" : ""} />
+            <div {...droppableListeners(i.id)} key={i.id} className={appendClass("basis-64 shrink-0 grow-0 h-full", [getDroppableState(i.id)?.draggingOver ? "droppable-container" : ""])}>
+              <CategoryCard {...draggableListeners(i.id)} id={i.id} title={i.title} tickets={(i as CategoryWithTickets).tickets} className={getDraggableState(i.id)?.dragging ? "draggable-item" : ""} />
             </div>
           ))}
         <AddCategory />
