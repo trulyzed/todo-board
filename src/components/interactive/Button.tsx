@@ -20,10 +20,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
     <button
       ref={ref}
       {...otherProps}
-      className={appendClass(`flex items-center gap-2 rounded px-2 py-1 text-white font-semibold`, [
+      className={appendClass(`flex items-center gap-2 rounded px-2 py-1 font-semibold`, [
+        variant === 'danger' ? 'text-red-800' : "text-white",
         className,
         !link && (variant === 'positive' ? "bg-blue-800" : variant === 'danger' ? "bg-red-800" : '') || '',
-        link && (variant === 'positive' ? "text-blue-800" : variant === 'danger' ? "text-red-800" : '') || '',
       ])}
       type={type}>
       {children}
