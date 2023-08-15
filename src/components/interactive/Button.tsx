@@ -1,5 +1,5 @@
 import { appendClass } from "@/lib/utils/classNameUtils"
-import { ComponentProps, HTMLProps, ReactNode, forwardRef } from "react"
+import { ComponentProps, ReactNode, forwardRef } from "react"
 
 export type ButtonProps = {
   className?: string

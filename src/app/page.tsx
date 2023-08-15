@@ -1,17 +1,17 @@
 'use client'
 
-import { useCallback, useContext, useEffect, useMemo } from "react"
+import { useCallback, useContext, useEffect } from "react"
 import { AddCategory } from "@/components/todo/category/AddCategory"
 import { CategoryCard } from "@/components/todo/category/CategoryCard"
 import { DataContext } from "@/context/dataProvider/DataProvider"
-import { editCategory, getCategories, updateCategoryOrders } from "@/queries/client/category"
+import { getCategories, updateCategoryOrders } from "@/queries/client/category"
 import { useQuery } from "@/hooks/useQuery"
 import { Category } from "@prisma/client"
 import { HomePageSkeleton } from "@/components/layout/loader/skeletons/HomePageSkeleton"
 import { CategoryWithTickets } from "@/context/dataProvider/types"
-import { useDraggable } from "@/hooks/dragAndDrop/useDraggable"
-import { UseDropArguments, useDroppable } from "@/hooks/dragAndDrop/useDroppable"
+import { UseDropArguments } from "@/hooks/dragAndDrop/useDragDrop"
 import { appendClass } from "@/lib/utils/classNameUtils"
+import { useDragDrop } from "@/hooks/dragAndDrop/useDragDrop"
 
 export default function Page() {
   const { data, loading } = useQuery<Category[]>({query: getCategories})
@@ -29,8 +29,7 @@ export default function Page() {
     updateCategoryOrders({orders: newCategories.map(i => ({id: i.id, order: i.order}))})
   }, [sortedCategories, setCategories])
 
-  const { listeners: draggableListeners, getState: getDraggableState } = useDraggable()
-  const { listeners: droppableListeners, getState: getDroppableState } = useDroppable({onDrop: handleDrag})
+  const { dragListeners, dropListeners, getState } = useDragDrop({onDrop: handleDrag})
   
   useEffect(() => {
     setCategories(data || [])
@@ -41,8 +40,8 @@ export default function Page() {
     : (
       <div className="flex items-start grow p-4 gap-3 overflow-x-auto">
           {sortedCategories.map(i => (
-            <div {...droppableListeners(i.id)} key={i.id} className={appendClass("basis-64 shrink-0 grow-0 h-full", [getDroppableState(i.id)?.draggingOver ? "droppable-container" : ""])}>
-              <CategoryCard {...draggableListeners(i.id)} id={i.id} title={i.title} tickets={(i as CategoryWithTickets).tickets} className={getDraggableState(i.id)?.dragging ? "draggable-item" : ""} />
+            <div {...dropListeners(i.id)} key={i.id} className={appendClass("basis-64 shrink-0 grow-0 h-full", [getState(i.id)?.entered ? "bg-zinc-200" : ""])}>
+              <CategoryCard {...dragListeners(i.id)} id={i.id} title={i.title} tickets={(i as CategoryWithTickets).tickets} className={getState(i.id)?.dragging ? "opacity-40 border-dotted border-4 border-white" : ""} />
             </div>
           ))}
         <AddCategory />

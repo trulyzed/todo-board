@@ -19,7 +19,8 @@ export async function POST(request: Request) {
   const data = await prisma.category.create({
     data: {
       title,
-      boardId: board?.id
+      boardId: board?.id,
+      order: await prisma.category.count() + 1
     }
   })
   return NextResponse.json(data)
