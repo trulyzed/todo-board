@@ -31,3 +31,14 @@ export const editCategory = async (payload: any) => {
     throw error
   }
 }
+
+
+export const updateCategoryOrders = async (payload: any) => {
+  const { data } = await apiClient(undefined, true).patch('/board/', JSON.stringify(payload))
+
+  try {
+    return JSON.parse(data || null) as Category[]
+  } catch (error) {
+    throw error
+  }
+}

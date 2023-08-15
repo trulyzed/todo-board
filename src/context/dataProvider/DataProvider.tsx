@@ -1,11 +1,12 @@
 'use client'
 
-import { FC, ReactNode, createContext, useCallback, useState } from "react"
+import { FC, ReactNode, createContext, useCallback, useMemo, useState } from "react"
 import { Category, Ticket } from "@prisma/client"
 import { CategoryWithTickets } from "./types"
 
 type DataContextValue = {
   categories: Category[]
+  sortedCategories: Category[]
   setCategories: (categories: Category[]) => void
   addCategory: (category: Category) => void
   editCategory: (id: string, category: Category) => void
@@ -19,6 +20,7 @@ type DataContextProviderProps = {
 
 const initialValue: DataContextValue = {
   categories: [],
+  sortedCategories: [],
   setCategories: () => {},
   addCategory: () => {},
   editCategory: () => {},
@@ -34,6 +36,7 @@ export const DataContextProvider:FC<DataContextProviderProps> = ({
   children
 }) => {
   const [categories, setCategories] = useState<DataContextValue['categories']>([])
+  const sortedCategories = useMemo(() => categories.sort((a, b) => (a.order || 0) - (b.order || 0)), [categories])
 
   const addCategory:DataContextValue['addCategory'] = useCallback((category) => {
     setCategories(prevVal => ([
@@ -73,6 +76,7 @@ export const DataContextProvider:FC<DataContextProviderProps> = ({
   return (
     <DataContext.Provider value={{
       categories,
+      sortedCategories,
       setCategories,
       addCategory,
       editCategory,

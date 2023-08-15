@@ -1,16 +1,16 @@
-import { DragEvent, useCallback, useState } from "react"
+import { DragEventHandler, useCallback, useState } from "react"
 
 export type DraggableAttributes = {
   draggable: boolean
-  onDragStart: (event: DragEvent) => void
-  onDragEnd: (event: DragEvent) => void
+  onDragStart: DragEventHandler
+  onDragEnd: DragEventHandler
 }
 
 export const useDraggable = () => {
   const [state, setState] = useState<{
     [id: string]: {dragging: boolean}
   }>()
-  const handleDragStart: (id: string) => DraggableAttributes['onDragStart'] = useCallback((id) => (event) => {
+  const dragStartHandler: (id: string) => DraggableAttributes['onDragStart'] = useCallback((id) => (event) => {
     event.dataTransfer.setData('text/plain', id)
     setState(prevVal => ({
       ...prevVal,
@@ -18,7 +18,7 @@ export const useDraggable = () => {
     }))
   }, [])
 
-  const handleDragEnd: (id: string) => DraggableAttributes['onDragEnd'] = useCallback((id) => (event) => {
+  const dragEndHandler: (id: string) => DraggableAttributes['onDragEnd'] = useCallback((id) => (event) => {
     setState(prevVal => ({
       ...prevVal,
       [id]: {dragging: false}
@@ -27,9 +27,9 @@ export const useDraggable = () => {
 
   const listeners: (id: string) => DraggableAttributes = useCallback((id: string) => ({
     draggable: true,
-    onDragStart: handleDragStart(id),
-    onDragEnd: handleDragEnd(id),
-  }), [handleDragStart, handleDragEnd])
+    onDragStart: dragStartHandler(id),
+    onDragEnd: dragEndHandler(id),
+  }), [dragStartHandler, dragEndHandler])
 
   const getState = useCallback((id: string) => {
     return state?.[id]
