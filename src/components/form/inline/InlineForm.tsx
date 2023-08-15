@@ -2,7 +2,7 @@
 
 import { FC, useCallback, useEffect, useMemo, useState } from "react"
 import { FormValue } from "@/components/form/types"
-import { appendNewClasses } from "@/lib/utils/classNameUtils"
+import { appendClass } from "@/lib/utils/classNameUtils"
 import { InlineFormProps } from "./types"
 import { InlineFormField } from "./InlineFormField"
 import { useForm } from "@/components/form/hooks/useForm"
@@ -93,7 +93,7 @@ export const InlineForm:FC<InlineFormProps> = ({
         onLoadDraft={handleLoadDraft}
       />
       <InlineFormField
-        formClassName={appendNewClasses("", [className])}
+        formClassName={appendClass("", [className])}
         show={showForm}
         fieldId={fieldId}
         onHide={handleHideForm}

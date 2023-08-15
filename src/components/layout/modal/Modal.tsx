@@ -6,7 +6,7 @@ import { X } from "@phosphor-icons/react";
 import { useDetectKeyPress } from "@/hooks/useDetectKeyPress";
 import { useDetectOutsideClick } from "@/hooks/useDetectOutsideClick";
 import { Button } from "@/components/interactive/Button";
-import { appendNewClasses } from "@/lib/utils/classNameUtils";
+import { appendClass } from "@/lib/utils/classNameUtils";
 
 export type ModalProps = {
   title?: ReactNode
@@ -45,7 +45,7 @@ export const Modal: FC<ModalProps> = ({
             </div>
             : null
           }
-          <div className={appendNewClasses('p-5', [title ? "" : 'mt-6'])}>
+          <div className={appendClass('p-5', [title ? "" : 'mt-6'])}>
             {children}
           </div>
         </div>

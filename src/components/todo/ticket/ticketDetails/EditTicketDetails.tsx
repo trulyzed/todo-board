@@ -5,7 +5,7 @@ import { InlineForm } from "@/components/form/inline/InlineForm"
 import { editTicket } from "@/queries/client/ticket"
 import { Subtitles, Article, Calendar } from "@phosphor-icons/react"
 import { InlineFormProps, RenderProps } from "@/components/form/inline/types"
-import { appendNewClasses } from "@/lib/utils/classNameUtils"
+import { appendClass } from "@/lib/utils/classNameUtils"
 
 type EditTicketDetailsProps = {
   id: string
@@ -72,7 +72,7 @@ export const TicketField:FC<TicketFieldProps> = ({
   ...otherProps
 }) => {
   return (
-    <div {...otherProps} className={appendNewClasses("flex items-center bg-gray-200 rounded p-3 gap-2 min-h-[50px]", [otherProps.className])}>
+    <div {...otherProps} className={appendClass("flex items-center bg-gray-200 rounded p-3 gap-2 min-h-[50px]", [otherProps.className])}>
       {icon} {value}
     </div>
   )

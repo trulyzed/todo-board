@@ -1,7 +1,7 @@
 'use client'
 
 import { FC } from "react"
-import { appendNewClasses } from "@/lib/utils/classNameUtils"
+import { appendClass } from "@/lib/utils/classNameUtils"
 import { Button } from "@/components/interactive/Button"
 
 type CancelActionProps = {
@@ -16,7 +16,7 @@ export const CancelAction:FC<CancelActionProps> = ({
   onCancel
 }) => {
   return (
-    <Button variant="danger" link className={appendNewClasses(`text-sm`, [className])} onClick={onCancel}>
+    <Button variant="danger" link className={appendClass(`text-sm`, [className])} onClick={onCancel}>
       {label}
     </Button>
   )

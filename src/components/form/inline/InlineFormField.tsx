@@ -3,7 +3,7 @@
 import { FC, useMemo, useRef } from "react"
 import { InlineFormProps } from "./types"
 import { Form } from "@/components/form/Form"
-import { appendNewClasses } from "@/lib/utils/classNameUtils"
+import { appendClass } from "@/lib/utils/classNameUtils"
 import { Field, FormProps } from "@/components/form/types"
 import { CancelAction } from "./CancelAction"
 import { useDetectOutsideClick } from "@/hooks/useDetectOutsideClick"
@@ -47,7 +47,7 @@ export const InlineFormField:FC<InlineFormFieldProps> = ({
   return show ? (
     <Form
       ref={formRef}
-      className={appendNewClasses("", [formClassName, "bg-gray-100 rounded p-2"])}
+      className={appendClass("", [formClassName, "bg-gray-100 rounded p-2"])}
       inputClassName="bg-slate-300"
       fields={fields}
       setFieldValue={setFieldValue}

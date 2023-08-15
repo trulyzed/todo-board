@@ -1,4 +1,4 @@
-import { appendNewClasses } from "@/lib/utils/classNameUtils"
+import { appendClass } from "@/lib/utils/classNameUtils"
 import { ComponentProps, HTMLProps, ReactNode, forwardRef } from "react"
 
 export type ButtonProps = {
@@ -20,7 +20,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
     <button
       ref={ref}
       {...otherProps}
-      className={appendNewClasses(`flex items-center gap-2 rounded px-2 py-1 text-white font-semibold`, [
+      className={appendClass(`flex items-center gap-2 rounded px-2 py-1 text-white font-semibold`, [
         className,
         !link && (variant === 'positive' ? "bg-blue-800" : variant === 'danger' ? "bg-red-700" : '') || '',
         link && (variant === 'positive' ? "text-blue-800" : variant === 'danger' ? "text-red-700" : '') || '',
