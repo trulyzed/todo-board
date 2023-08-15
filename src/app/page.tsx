@@ -29,7 +29,7 @@ export default function Page() {
     updateCategoryOrders({orders: newCategories.map(i => ({id: i.id, order: i.order}))})
   }, [sortedCategories, setCategories])
 
-  const { dragListeners, dropListeners, getState } = useDragDrop({onDrop: handleDrag})
+  const { dragListeners, dropListeners, getState } = useDragDrop({onDrop: handleDrag, identifier: 'category'})
   
   useEffect(() => {
     setCategories(data || [])
@@ -40,8 +40,16 @@ export default function Page() {
     : (
       <div className="flex items-start grow p-4 gap-3 overflow-x-auto">
           {sortedCategories.map(i => (
-            <div {...dropListeners(i.id)} key={i.id} className={appendClass("basis-64 shrink-0 grow-0 h-full", [getState(i.id)?.entered ? "bg-zinc-200" : ""])}>
-              <CategoryCard {...dragListeners(i.id)} id={i.id} title={i.title} tickets={(i as CategoryWithTickets).tickets} className={getState(i.id)?.dragging ? "opacity-40 border-dotted border-4 border-white" : ""} />
+            <div
+              {...dropListeners(i.id)}
+              key={i.id}
+              className={appendClass("basis-64 shrink-0 grow-0 h-full", [getState(i.id)?.entered ? "border-dotted border-4 border-white bg-zinc-200" : ""])}>
+              <CategoryCard
+                {...dragListeners(i.id)}
+                id={i.id} title={i.title}
+                tickets={(i as CategoryWithTickets).tickets}
+                className={getState(i.id)?.dragging ? "opacity-40 border-dotted border-4 border-white" : ""}
+              />
             </div>
           ))}
         <AddCategory />

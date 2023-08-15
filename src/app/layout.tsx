@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Navbar } from '@/components/layout/navbar/Navbar'
 import { DataContextProvider } from '@/context/dataProvider/DataProvider'
+import { DragDropProvider } from '@/context/DragDropProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,7 +25,9 @@ export default function RootLayout({
           <Navbar />
           <main className='flex h-content'>
             <DataContextProvider>
-              {children}
+              <DragDropProvider>
+                {children}
+              </DragDropProvider>
             </DataContextProvider>
           </main>
         </AuthProvider>
