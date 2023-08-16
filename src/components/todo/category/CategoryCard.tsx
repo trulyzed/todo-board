@@ -6,7 +6,7 @@ import { Ticket as TicketType } from "@prisma/client"
 import { AddTicket } from "@/components/todo/ticket/AddTicket"
 import { appendClass } from "@/lib/utils/classNameUtils"
 import { TicketList } from "../ticket/TicketList"
-import { UseDropArguments, useDragDrop } from "@/hooks/dragAndDrop/useDragDrop"
+import { useTicketDragDrop } from "../ticket/hooks/useTicketDragDrop"
 
 type CategoryCardProps = {
   className?: string
@@ -24,12 +24,7 @@ export const CategoryCard = forwardRef<HTMLDivElement, CategoryCardProps>(({
 }, ref) => {
   const ticketsContainerRef = useRef<HTMLDivElement>(null)
   const sortedTickets = useMemo(() => tickets.sort((a, b) => (a.order || 0) - (b.order || 0)), [tickets])
-
-  const handleDragDrop: UseDropArguments['onDrop'] = useCallback(({sourceId, targetId}) => {
-    console.log('xxxxxxxxx', sourceId, targetId, id, )
-  }, [])
-  const { dropListeners, getState } = useDragDrop({onDrop: handleDragDrop, identifier: 'ticket', initiatorContext: id})
-
+  const { dropListeners, getState } = useTicketDragDrop({categoryId: id})
 
   const handleSuccessCreate = useCallback(() => {
     ticketsContainerRef.current?.scrollTo(0, ticketsContainerRef.current.scrollHeight)
