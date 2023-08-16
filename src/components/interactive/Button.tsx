@@ -22,8 +22,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
       {...otherProps}
       className={appendClass(`flex items-center gap-2 rounded px-2 py-1 font-semibold`, [
         variant === 'danger' ? 'text-red-800' : "text-white",
-        className,
         !link && (variant === 'positive' ? "bg-blue-800" : variant === 'danger' ? "bg-red-800" : '') || '',
+        className,
       ])}
       type={type}>
       {children}

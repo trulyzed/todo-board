@@ -3,9 +3,11 @@
 import { FC, ReactNode, useMemo } from "react"
 import { InlineForm } from "@/components/form/inline/InlineForm"
 import { editTicket } from "@/queries/client/ticket"
-import { Subtitles, Article, Calendar } from "@phosphor-icons/react"
+import { Subtitles, Article, Calendar, TextH } from "@phosphor-icons/react"
 import { InlineFormProps, RenderProps } from "@/components/form/inline/types"
 import { appendClass } from "@/lib/utils/classNameUtils"
+import { formatDate } from "@/lib/utils/dateUtils"
+import { DATE_DISPLAY_FORMAT, DATE_FORMAT } from "@/components/form/constants"
 
 type EditTicketDetailsProps = {
   id: string
@@ -28,7 +30,7 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
       refId: id,
       required: true,
       query: editTicket,
-      render: (renderProps) => <TicketField {...renderProps} value={title} icon={<Subtitles weight="bold" className="shrink-0" />} />,
+      render: (renderProps) => <TicketField {...renderProps} value={title} icon={<TextH weight="bold" className="shrink-0 text-xl" />} />,
       initialValue: title,
       onSuccess: onSuccess
     },
@@ -37,7 +39,7 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
       refId: id,
       inputType: "TextArea",
       query: editTicket,
-      render: (renderProps) => <TicketField {...renderProps} value={description} icon={<Article weight="bold" className="shrink-0" />} />,
+      render: (renderProps) => <TicketField {...renderProps} value={description} icon={<Article weight="bold" className="shrink-0 text-xl" />} isTextarea />,
       initialValue: description,
       onSuccess: onSuccess,
       canDraft: true,
@@ -47,7 +49,7 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
       refId: id,
       inputType: "DateTime",
       query: editTicket,
-      render: (renderProps) => <TicketField {...renderProps} value={expiresAt} icon={<Calendar weight="bold" className="shrink-0" />} />,
+      render: (renderProps) => <TicketField {...renderProps} value={expiresAt} icon={<Calendar weight="bold" className="shrink-0 text-xl" />} isDate />,
       initialValue: expiresAt,
       onSuccess: onSuccess,
     },
@@ -64,16 +66,25 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
 type TicketFieldProps = {
   value: ReactNode
   icon: ReactNode
+  isTextarea?: boolean
+  isDate?: boolean
 } & RenderProps
 
 export const TicketField:FC<TicketFieldProps> = ({
   value,
   icon,
+  isTextarea,
+  isDate,
   ...otherProps
 }) => {
   return (
-    <div {...otherProps} className={appendClass("flex items-center bg-gray-200 rounded p-3 gap-2 min-h-[50px]", [otherProps.className])}>
-      {icon} {value}
+    <div
+      {...otherProps}
+      className={appendClass("flex items-center bg-gray-200 rounded p-3 gap-2", [
+        otherProps.className,
+        isTextarea ? "min-h-[100px]" : "min-h-[50px]"
+      ])}>
+      {icon} {(isDate && typeof value === 'string') ? formatDate(value, DATE_DISPLAY_FORMAT, DATE_FORMAT) : value}
     </div>
   )
 }

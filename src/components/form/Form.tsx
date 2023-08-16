@@ -62,7 +62,7 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(({
       ))}
       <div className="flex items-center gap-1">
         <Button type="submit" disabled={processing}>
-          {processing ? <Spinner className="w-4 h-4" /> : submitLabel}
+          {processing ? <Spinner className="w-3.5 h-3.5" /> : submitLabel}
         </Button>
         {actions}
       </div>

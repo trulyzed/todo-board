@@ -8,6 +8,7 @@ import { Ticket } from "@prisma/client"
 import { DataContext } from "@/context/dataProvider/DataProvider"
 import { useQuery } from "@/hooks/useQuery"
 import { Spinner } from "@/components/layout/loader/Spinner"
+import { getAddressmentId } from "@/components/todo/ticket/ExpiryNotifier"
 
 type TicketDetailsProps = {
   refId: string
@@ -52,9 +53,10 @@ export const TicketDetails:FC<TicketDetailsProps> = ({
       description: data.description === null ? undefined : data.description ,
       expiresAt: data?.expiresAt ? formatDate(data.expiresAt) : ""
     })
+    localStorage.removeItem(getAddressmentId(data.id))
   }, [editTicket, categoryId, refId])
 
-  return loading ? <Spinner className="w-10 h-10" /> :(
+  return loading ? <Spinner className="w-14 h-14" /> :(
     <div className="rounded-lg bg-zinc-100 p-2 my-2">
       <EditTicketDetails
         id={refId}

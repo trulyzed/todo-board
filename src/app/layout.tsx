@@ -29,6 +29,7 @@ export default function RootLayout({
                 {children}
               </DragDropProvider>
             </DataContextProvider>
+            <div id='notification-root' className='flex flex-col m-2 gap-2 absolute right-0 top-navbar' />
           </main>
         </AuthProvider>
         <div id='modal-root' />
