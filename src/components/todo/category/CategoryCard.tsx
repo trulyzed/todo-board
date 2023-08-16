@@ -5,7 +5,8 @@ import { EditCategory } from "./EditCategory"
 import { Ticket as TicketType } from "@prisma/client"
 import { AddTicket } from "@/components/todo/ticket/AddTicket"
 import { appendClass } from "@/lib/utils/classNameUtils"
-import { TicketList } from "./TicketList"
+import { TicketList } from "../ticket/TicketList"
+import { UseDropArguments, useDragDrop } from "@/hooks/dragAndDrop/useDragDrop"
 
 type CategoryCardProps = {
   className?: string
@@ -24,6 +25,12 @@ export const CategoryCard = forwardRef<HTMLDivElement, CategoryCardProps>(({
   const ticketsContainerRef = useRef<HTMLDivElement>(null)
   const sortedTickets = useMemo(() => tickets.sort((a, b) => (a.order || 0) - (b.order || 0)), [tickets])
 
+  const handleDragDrop: UseDropArguments['onDrop'] = useCallback(({sourceId, targetId}) => {
+    console.log('xxxxxxxxx', sourceId, targetId, id, )
+  }, [])
+  const { dropListeners, getState } = useDragDrop({onDrop: handleDragDrop, identifier: 'ticket', initiatorContext: id})
+
+
   const handleSuccessCreate = useCallback(() => {
     ticketsContainerRef.current?.scrollTo(0, ticketsContainerRef.current.scrollHeight)
   }, [])
@@ -32,7 +39,11 @@ export const CategoryCard = forwardRef<HTMLDivElement, CategoryCardProps>(({
     <div
       ref={ref}
       {...otherProps}
-      className={appendClass("flex flex-col rounded-xl p-2 bg-zinc-900 max-h-full", [className])}>
+      {...dropListeners(id)}
+      className={appendClass("flex flex-col rounded-xl p-2 bg-zinc-900 max-h-full", [
+        className,
+        getState(id)?.entered ? "border-dotted border-4 border-white" : ""
+      ])}>
       <div className="p-2">
         <EditCategory refId={id} initialValue={title} />
       </div>

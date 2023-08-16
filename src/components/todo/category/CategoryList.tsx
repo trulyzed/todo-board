@@ -1,10 +1,9 @@
-import { FC, useCallback, useContext } from "react"
+import { FC, useContext } from "react"
 import { CategoryCard } from "./CategoryCard"
 import { CategoryWithTickets } from "@/context/dataProvider/types"
 import { appendClass } from "@/lib/utils/classNameUtils"
-import { changeCategoryOrders } from "@/queries/client/category"
-import { UseDropArguments, useDragDrop } from "@/hooks/dragAndDrop/useDragDrop"
 import { DataContext } from "@/context/dataProvider/DataProvider"
+import { useCategoryDragDrop } from "./hooks/useCategoryDragDrop"
 
 type CategoryListProps = {
 
@@ -13,21 +12,8 @@ type CategoryListProps = {
 export const CategoryList:FC<CategoryListProps> = ({
 
 }) => {
-  const { sortedCategories, setCategories } = useContext(DataContext)
-
-  const handleDrag: UseDropArguments['onDrop'] = useCallback(({sourceId, targetId}) => {
-    const newSortedCategories = [...sortedCategories]
-    const sourceIndex = newSortedCategories.findIndex(i => i.id === sourceId)
-    const targetIndex = newSortedCategories.findIndex(i => i.id === targetId)
-    const source = newSortedCategories[sourceIndex]
-    newSortedCategories.splice(sourceIndex, 1)
-    newSortedCategories.splice(targetIndex, 0, source)
-    const newCategories = newSortedCategories.map((i, index) => ({...i, order: index}))
-    setCategories(newCategories)
-    changeCategoryOrders({orders: newCategories.map(i => ({id: i.id, order: i.order}))})
-  }, [sortedCategories, setCategories])
-
-  const { dragListeners, dropListeners, getState } = useDragDrop({onDrop: handleDrag, identifier: 'category'})
+  const { sortedCategories } = useContext(DataContext)
+  const { dragListeners, dropListeners, getState } = useCategoryDragDrop({})
 
   return (
     sortedCategories.map(i => (

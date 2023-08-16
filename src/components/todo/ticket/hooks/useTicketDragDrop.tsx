@@ -1,25 +1,18 @@
-import { FC, useCallback, useContext, useMemo } from "react"
-import { TicketCard } from "../ticket/TicketCard"
 import { DragDropContext } from "@/context/DragDropProvider"
 import { DataContext } from "@/context/dataProvider/DataProvider"
-import { Ticket } from "@prisma/client"
-import { UseDropArguments, useDragDrop } from "@/hooks/dragAndDrop/useDragDrop"
 import { CategoryWithTickets } from "@/context/dataProvider/types"
+import { UseDropArguments, useDragDrop } from "@/hooks/dragAndDrop/useDragDrop"
 import { changeTicketOrders } from "@/queries/client/ticket"
-import { appendClass } from "@/lib/utils/classNameUtils"
+import { Ticket } from "@prisma/client"
+import { useCallback, useContext } from "react"
 
-type TicketListProps = {
+type UseTicketDragDropArguments = {
   categoryId: string
-  tickets: Ticket[]
 }
 
-export const TicketList: FC<TicketListProps> = ({
-  categoryId,
-  tickets=[],
-}) => {
-  const { categories, setCategories } = useContext(DataContext)
+export const useTicketDragDrop = ({categoryId}: UseTicketDragDropArguments) => {
   const { initiatorContext } = useContext(DragDropContext)
-  const sortedTickets = useMemo(() => tickets.sort((a, b) => (a.order || 0) - (b.order || 0)), [tickets])
+  const { categories, setCategories } = useContext(DataContext)
 
   const handleDragDrop: UseDropArguments['onDrop'] = useCallback(({sourceId, targetId}) => {
     const sourceCategoryId = initiatorContext?.current
@@ -51,17 +44,12 @@ export const TicketList: FC<TicketListProps> = ({
       newTicket: sourceCategoryIndex !== targetCategoryIndex ? {...source, categoryId: categories[targetCategoryIndex].id} as Ticket : undefined,
     })
   }, [categoryId, initiatorContext, categories, setCategories])
+
   const { dragListeners, dropListeners, getState } = useDragDrop({onDrop: handleDragDrop, identifier: 'ticket', initiatorContext: categoryId})
 
-  return (
-    sortedTickets.map((i, index) => (
-      <div key={index} {...dropListeners(categoryId)} className={appendClass("py-1", [getState(i.id)?.entered ? "border-dotted border-4 border-white bg-zinc-200" : ""])}>
-        <TicketCard
-          {...dragListeners(i.id)}
-          className={appendClass("", [getState(i.id)?.dragging ? "opacity-40 border-dotted border-4 border-white" : ""])}
-          categoryId={categoryId} id={i.id} title={i.title}
-        />
-      </div>
-    ))
-  )
+  return {
+    dragListeners,
+    dropListeners,
+    getState
+  }
 }
