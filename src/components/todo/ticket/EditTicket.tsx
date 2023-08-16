@@ -4,7 +4,6 @@ import { editTicket as editTicketAPI } from "@/queries/client/ticket"
 import { FC, useCallback, useContext } from "react"
 import { InlineForm } from "@/components/form/inline/InlineForm"
 import { Pencil } from "@phosphor-icons/react"
-import { appendClass } from "@/lib/utils/classNameUtils"
 import { InlineFormProps } from "@/components/form/inline/types"
 import { DataContext } from "@/context/dataProvider/DataProvider"
 import { Ticket } from "@prisma/client"
@@ -44,7 +43,7 @@ export const EditTicket:FC<EditTicketProps> = ({
       onToggle={onToggle}
       clickEventHandler={handleClickEvent}
       render={(renderProps) => (
-        <Pencil {...renderProps} color="white" className={appendClass("group-hover:block hidden right-2", [renderProps.className])} />
+        <Pencil {...renderProps} color="white" className={`group-hover:block hidden right-2 ${renderProps.className}`} />
       )}
     />
   )

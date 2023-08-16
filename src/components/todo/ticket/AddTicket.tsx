@@ -4,7 +4,6 @@ import { FC, useCallback, useContext, useMemo } from "react"
 import { createTicket } from "@/queries/client/ticket"
 import { InlineForm } from "@/components/form/inline/InlineForm"
 import { Plus } from "@phosphor-icons/react"
-import { appendClass } from "@/lib/utils/classNameUtils"
 import { Button } from "@/components/interactive/Button"
 import { DataContext } from "@/context/dataProvider/DataProvider"
 import { Ticket } from "@prisma/client"
@@ -34,7 +33,7 @@ export const AddTicket:FC<AddTicketProps> = ({
       required
       onSuccess={handleSuccessfulCreate}
       render={(renderProps) => (
-        <Button {...renderProps} className={appendClass(``, [renderProps.className, 'bg-sky-800 font-normal'])}>
+        <Button {...renderProps} className={`bg-sky-800 font-normal ${renderProps.className}`}>
           <Plus weight="bold" />
           {"Add Ticket"}
         </Button>

@@ -55,7 +55,9 @@ export const ExpiryNotifier = () => {
     <>
       {alertableTickets.map(i => (
         <Alert key={i.id} onClose={handleClose(i.id)}>
-          <p className="bold">{i.title}</p> is nearing the expiry date
+          <p>
+            <strong>{i.title}</strong> is going to expire soon
+          </p>
         </Alert>
       ))}
     </>

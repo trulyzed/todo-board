@@ -56,7 +56,7 @@ export const TicketDetails:FC<TicketDetailsProps> = ({
     localStorage.removeItem(getAddressmentId(data.id))
   }, [editTicket, categoryId, refId])
 
-  return loading ? <Spinner className="w-14 h-14" /> :(
+  return loading ? <Spinner medium /> :(
     <div className="rounded-lg bg-zinc-100 p-2 my-2">
       <EditTicketDetails
         id={refId}

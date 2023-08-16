@@ -6,7 +6,6 @@ import { X } from "@phosphor-icons/react";
 import { useDetectKeyPress } from "@/hooks/useDetectKeyPress";
 import { useDetectOutsideClick } from "@/hooks/useDetectOutsideClick";
 import { Button } from "@/components/interactive/Button";
-import { appendClass } from "@/lib/utils/classNameUtils";
 
 export type ModalProps = {
   title?: ReactNode
@@ -35,17 +34,17 @@ export const Modal: FC<ModalProps> = ({
       <div className="bg-slate-900/75 absolute inset-0 m-auto overflow-y-auto flex items-center justify-center">
         <div ref={modalRef} className="w-[50vw] min-h-[50vh] bg-slate-200 rounded-xl drop-shadow-md">
           <div className="relative self-end">
-            <Button onClick={handleClose} className="absolute right-0 p-2 m-2" link>
+            <Button onClick={handleClose} className="absolute right-0 p-2 m-2" link variant="danger">
               <X weight="bold" className="fill-slate-900" />
             </Button>
           </div>
           {title ?
             <div className="p-4 pr-12">
-                <h5 className="font-semibold text-zinc-800 text-xl">{title}</h5>
+              <h5 className="font-semibold text-zinc-800 text-xl">{title}</h5>
             </div>
             : null
           }
-          <div className={appendClass('p-5', [title ? "" : 'mt-6'])}>
+          <div className={`p-5 ${title ? "" : 'mt-6'}`}>
             {children}
           </div>
         </div>

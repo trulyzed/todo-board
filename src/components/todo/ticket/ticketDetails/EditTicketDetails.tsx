@@ -3,9 +3,8 @@
 import { FC, ReactNode, useMemo } from "react"
 import { InlineForm } from "@/components/form/inline/InlineForm"
 import { editTicket } from "@/queries/client/ticket"
-import { Subtitles, Article, Calendar, TextH } from "@phosphor-icons/react"
+import { Article, Calendar, TextH } from "@phosphor-icons/react"
 import { InlineFormProps, RenderProps } from "@/components/form/inline/types"
-import { appendClass } from "@/lib/utils/classNameUtils"
 import { formatDate } from "@/lib/utils/dateUtils"
 import { DATE_DISPLAY_FORMAT, DATE_FORMAT } from "@/components/form/constants"
 
@@ -70,6 +69,7 @@ type TicketFieldProps = {
   isDate?: boolean
 } & RenderProps
 
+
 export const TicketField:FC<TicketFieldProps> = ({
   value,
   icon,
@@ -80,10 +80,10 @@ export const TicketField:FC<TicketFieldProps> = ({
   return (
     <div
       {...otherProps}
-      className={appendClass("flex items-center bg-gray-200 rounded p-3 gap-2", [
-        otherProps.className,
-        isTextarea ? "min-h-[100px]" : "min-h-[50px]"
-      ])}>
+      className={`flex items-center bg-gray-200 rounded p-3 gap-2 min-h-[50px]
+        ${otherProps.className}
+        ${isTextarea ? 'min-h-[100px]' : ''}
+      `}>
       {icon} {(isDate && typeof value === 'string') ? formatDate(value, DATE_DISPLAY_FORMAT, DATE_FORMAT) : value}
     </div>
   )

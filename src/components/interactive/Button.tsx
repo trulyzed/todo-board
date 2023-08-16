@@ -1,4 +1,3 @@
-import { appendClass } from "@/lib/utils/classNameUtils"
 import { ComponentProps, ReactNode, forwardRef } from "react"
 
 export type ButtonProps = {
@@ -6,6 +5,7 @@ export type ButtonProps = {
   children: ReactNode
   variant?: 'positive' | 'danger'
   link?: boolean
+  textSize?: string
 } & ComponentProps<'button'>
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
@@ -14,21 +14,29 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   variant='positive',
   type='button',
   link,
+  textSize,
   ...otherProps
 }, ref) => {
+  const buttonClassName = classNames[`${link ? "link" : ""}-${variant}`]
   return (
     <button
       ref={ref}
       {...otherProps}
-      className={appendClass(`flex items-center gap-2 rounded px-2 py-1 font-semibold`, [
-        variant === 'danger' ? 'text-red-800' : "text-white",
-        !link && (variant === 'positive' ? "bg-sky-800" : variant === 'danger' ? "bg-red-800" : '') || '',
-        className,
-      ])}
+      className={`flex items-center gap-2 rounded px-2 py-1 font-semibold
+        ${buttonClassName}
+        ${className}
+      `}
       type={type}>
       {children}
     </button>
   )
 })
+
+const classNames: {[key: string]: string} = {
+  'link-danger': 'text-red-800',
+  'link-positive': 'text-white',
+  '-danger': 'bg-red-800 text-white',
+  '-positive': 'bg-sky-800 text-white',
+}
 
 Button.displayName = "Button"

@@ -3,7 +3,6 @@
 import { FC, useCallback, useContext } from "react"
 import { editCategory as editCategoryAPI } from "@/queries/client/category"
 import { InlineForm } from "@/components/form/inline/InlineForm"
-import { appendClass } from "@/lib/utils/classNameUtils"
 import { DataContext } from "@/context/dataProvider/DataProvider"
 import { Category } from "@prisma/client"
 
@@ -32,7 +31,7 @@ export const EditCategory:FC<EditCategoryProps> = ({
       required
       onSuccess={handleSuccessfulEdit}
       render={(renderProps) => (
-        <h4 {...renderProps} className={appendClass("font-bold text-slate-50", [renderProps.className])}>{initialValue}</h4>
+        <h4 {...renderProps} className={`font-bold text-slate-50 ${renderProps.className}`}>{initialValue}</h4>
       )}
     />
   )

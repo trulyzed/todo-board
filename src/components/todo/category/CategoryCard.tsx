@@ -4,7 +4,6 @@ import { forwardRef, useCallback, useMemo, useRef } from "react"
 import { EditCategory } from "./EditCategory"
 import { Ticket as TicketType } from "@prisma/client"
 import { AddTicket } from "@/components/todo/ticket/AddTicket"
-import { appendClass } from "@/lib/utils/classNameUtils"
 import { TicketList } from "../ticket/TicketList"
 import { useTicketDragDrop } from "../ticket/hooks/useTicketDragDrop"
 
@@ -35,10 +34,10 @@ export const CategoryCard = forwardRef<HTMLDivElement, CategoryCardProps>(({
       ref={ref}
       {...otherProps}
       {...dropListeners(id)}
-      className={appendClass("flex flex-col rounded-xl p-2 bg-zinc-900 max-h-full", [
-        className,
-        getState(id)?.entered ? "border-dotted border-4 border-white" : ""
-      ])}>
+      className={`flex flex-col rounded-xl p-2 bg-zinc-900 max-h-full
+        ${getState(id)?.entered ? "border-dotted border-4 border-white" : ""}
+        ${className}
+      `}>
       <div className="p-2">
         <EditCategory refId={id} initialValue={title} />
       </div>

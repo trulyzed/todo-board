@@ -17,13 +17,13 @@ export const Alert:FC<AlertProps> = ({
   onClose
 }) => {
   const content = useMemo(() => (
-    <div className="rounded bg-zinc-100 p-2 drop-shadow">
+    <div className="rounded bg-zinc-100 drop-shadow">
       <div className="self-end">
-        <Button onClick={onClose} className="absolute right-0 px-0 py-0 mr-2" link>
+        <Button onClick={onClose} className="absolute right-0 px-0 py-0 mx-0 my-1" link>
           <X weight="bold" className="fill-red-500"/>
         </Button>
       </div>
-      <div className="mt-3 mb-2 ml-2 mr-5">
+      <div className="mt-6 mb-6 ml-4 mr-8">
         {message}
         {children}
       </div>

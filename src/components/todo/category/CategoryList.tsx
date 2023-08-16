@@ -1,7 +1,6 @@
 import { FC, useContext } from "react"
 import { CategoryCard } from "./CategoryCard"
 import { CategoryWithTickets } from "@/context/dataProvider/types"
-import { appendClass } from "@/lib/utils/classNameUtils"
 import { DataContext } from "@/context/dataProvider/DataProvider"
 import { useCategoryDragDrop } from "./hooks/useCategoryDragDrop"
 
@@ -20,12 +19,14 @@ export const CategoryList:FC<CategoryListProps> = ({
       <div
         {...dropListeners(i.id)}
         key={i.id}
-        className={appendClass("basis-64 shrink-0 grow-0 h-full", [getState(i.id)?.entered ? "border-dotted border-4 border-white bg-zinc-200" : ""])}>
+        className={`basis-64 shrink-0 grow-0 h-full
+          ${getState(i.id)?.entered ? "border-dotted border-4 border-white bg-zinc-300 m-1" : ""})
+        `}>
         <CategoryCard
           {...dragListeners(i.id)}
           id={i.id} title={i.title}
           tickets={(i as CategoryWithTickets).tickets}
-          className={getState(i.id)?.dragging ? "opacity-40 border-dotted border-4 border-white" : ""}
+          className={getState(i.id)?.dragging ? "opacity-70" : ""}
         />
       </div>
     ))
