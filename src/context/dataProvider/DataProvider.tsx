@@ -46,10 +46,10 @@ export const DataContextProvider:FC<DataContextProviderProps> = ({
   }, [])
 
   const editCategory:DataContextValue['editCategory'] = useCallback((id, category) => {
-    const newCategories = [...categories]
+    const newCategories = [...categories] as CategoryWithTickets[]
     const matchedIndex = newCategories.findIndex(i => i.id === id)
     if (matchedIndex >= 0) {
-      newCategories[matchedIndex] = category
+      newCategories[matchedIndex] = {...category, tickets: newCategories[matchedIndex].tickets}
       setCategories(newCategories)
     }
   }, [categories])
