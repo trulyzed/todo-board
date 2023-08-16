@@ -35,8 +35,8 @@ export const Modal: FC<ModalProps> = ({
       <div className="bg-slate-900/75 absolute inset-0 m-auto overflow-y-auto flex items-center justify-center">
         <div ref={modalRef} className="w-[50vw] min-h-[50vh] bg-slate-200 rounded-xl drop-shadow-md">
           <div className="relative self-end">
-            <Button onClick={handleClose} className="absolute right-0 bg-red-500 p-2 m-2">
-              <X weight="bold" />
+            <Button onClick={handleClose} className="absolute right-0 p-2 m-2" link>
+              <X weight="bold" className="fill-slate-900" />
             </Button>
           </div>
           {title ?

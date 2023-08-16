@@ -47,7 +47,7 @@ export const InlineFormField:FC<InlineFormFieldProps> = ({
   return show ? (
     <Form
       ref={formRef}
-      className={appendClass("", [formClassName, "bg-gray-100 rounded p-2"])}
+      className={appendClass("bg-gray-200 rounded p-2", [formClassName])}
       inputClassName="bg-slate-300"
       fields={fields}
       setFieldValue={setFieldValue}

@@ -28,14 +28,13 @@ export const AddTicket:FC<AddTicketProps> = ({
 
   return (
     <InlineForm
-      className={''}
       query={createTicket}
       queryParams={queryParams}
       fieldId={'title'}
       required
       onSuccess={handleSuccessfulCreate}
       render={(renderProps) => (
-        <Button {...renderProps} className={appendClass(``, [renderProps.className])}>
+        <Button {...renderProps} className={appendClass(``, [renderProps.className, 'bg-sky-800 font-normal'])}>
           <Plus weight="bold" />
           {"Add Ticket"}
         </Button>

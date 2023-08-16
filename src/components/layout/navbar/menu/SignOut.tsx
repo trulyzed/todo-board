@@ -11,7 +11,7 @@ export const SignOut = () => {
   }, [])
 
   return (
-    <Button className="rounded bg-red-500 text-white py-1 px-2" onClick={handleSignOut} title="Sign out">
+    <Button className="rounded text-white py-1 px-2" onClick={handleSignOut} title="Sign out" variant="danger">
       <SignOutIcon weight="bold" />
     </Button>
   )

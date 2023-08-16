@@ -47,7 +47,9 @@ export const CategoryCard = forwardRef<HTMLDivElement, CategoryCardProps>(({
           <TicketList tickets={tickets} categoryId={id} />
         </div>
       : null}
-      <AddTicket onSuccess={handleSuccessCreate} refId={id} />
+      <div className="px-1 mb-2">
+        <AddTicket onSuccess={handleSuccessCreate} refId={id} />
+      </div>
     </div>
   )
 })
