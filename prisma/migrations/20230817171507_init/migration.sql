@@ -81,7 +81,7 @@ CREATE TABLE "History" (
     "modelId" TEXT,
     "operation" TEXT NOT NULL,
     "params" TEXT NOT NULL,
-    "message" TEXT NOT NULL,
+    "message" TEXT,
     "userId" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
