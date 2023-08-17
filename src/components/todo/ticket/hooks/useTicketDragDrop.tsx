@@ -15,7 +15,7 @@ export const useTicketDragDrop = ({categoryId}: UseTicketDragDropArguments) => {
   const { categories, setCategories } = useContext(DataContext)
 
   const handleDragDrop: UseDropArguments['onDrop'] = useCallback(({sourceId, targetId}) => {
-    const sourceCategoryId = initiatorContext?.current
+    const sourceCategoryId = initiatorContext
     const newSortedCategories = [...categories] as CategoryWithTickets[]
     const sourceCategoryIndex = newSortedCategories.findIndex(i => i.id === sourceCategoryId)
     const targetCategoryIndex = newSortedCategories.findIndex(i => i.id === categoryId)

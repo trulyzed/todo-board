@@ -22,6 +22,7 @@ export const InlineForm:FC<InlineFormProps> = ({
   onToggle,
   clickEventHandler,
   canDraft,
+  onShowForm
 }) => {
   const { formValues, handleSubmit, setFieldValue, hasUnsavedValue, handleReset: resetForm } = useForm({initialValues: {
     [fieldId]: initialValue
@@ -49,20 +50,28 @@ export const InlineForm:FC<InlineFormProps> = ({
     setShowForm(true)
   }, [])
 
-  const onSubmit = useCallback((values: FormValue) => {
+  useEffect(() => {
+    onShowForm?.(showForm)
+  }, [showForm, onShowForm])
+
+  const onSubmit = useCallback(async (values: FormValue) => {
     if (processing) return
     setProcessing(true)
-    query({
-      ...values,
-      ...refId && {id: refId},
-      ...queryParams
-    }).then((resp) => {
+    try {
+      const resp = await query({
+        ...values,
+        ...refId && {id: refId},
+        ...queryParams
+      })
       onSuccess?.(resp)
       setShowForm(false)
       clearDraft()
-    }).finally(() => {
+      return true
+    } catch (error) {
+      
+    } finally {
       setProcessing(false)
-    })
+    }
   }, [processing, query, queryParams, refId, onSuccess, clearDraft])
 
   const handleLoadDraft = useCallback((value: string) => {

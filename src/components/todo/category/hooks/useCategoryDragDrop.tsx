@@ -24,7 +24,6 @@ export const useCategoryDragDrop = ({}: UseCategoryDropArguments) => {
 
   const { dragListeners, dropListeners, getState } = useDragDrop({onDrop: handleDrag, identifier: 'category'})
 
-
   return {
     dragListeners,
     dropListeners,

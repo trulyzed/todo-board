@@ -1,10 +1,12 @@
 'use client'
 
-import { FC, MutableRefObject, ReactNode, createContext, useRef } from "react"
+import { FC, ReactNode, createContext, useState } from "react"
 
 type DragDropValue = {
-  activeDragId?: MutableRefObject<string | null>
-  initiatorContext?: MutableRefObject<any | null>
+  activeDragId?: string
+  initiatorContext?: string
+  setActiveDragId: (value: string) => void
+  setInitiatorContext: (value: string) => void
 }
 
 type DragDropProviderProps = {
@@ -13,7 +15,9 @@ type DragDropProviderProps = {
 
 const initialValue: DragDropValue = {
   activeDragId: undefined,
-  initiatorContext: undefined
+  initiatorContext: undefined,
+  setActiveDragId: () => {},
+  setInitiatorContext: () => {},
 }
 
 export const DragDropContext = createContext<DragDropValue>({
@@ -23,12 +27,14 @@ export const DragDropContext = createContext<DragDropValue>({
 export const DragDropProvider:FC<DragDropProviderProps> = ({
   children
 }) => {
-  const activeDragId = useRef(null)
-  const initiatorContext = useRef(null)
+  const [activeDragId, setActiveDragId] = useState<string>()
+  const [initiatorContext, setInitiatorContext] = useState<string>()
   return (
     <DragDropContext.Provider value={{
       activeDragId,
-      initiatorContext
+      initiatorContext,
+      setActiveDragId,
+      setInitiatorContext
     }}>
       {children}
     </DragDropContext.Provider>

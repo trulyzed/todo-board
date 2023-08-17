@@ -44,8 +44,19 @@ export async function PATCH(request: Request) {
   
     if (!category) return new Response(getJSONableError("Category not found"), {status: 404})
 
-    await prisma.ticket.create({
+    const ticket = await prisma.ticket.create({
       data: newTicket
+    })
+
+    await prisma.history.create({
+      data: {
+        model: "Ticket",
+        operation: "move",
+        message: `${category.title}`,
+        userId: user?.id!,
+        modelId: ticket.id,
+        params: JSON.stringify({order: ticket.order})
+      }
     })
   }
 

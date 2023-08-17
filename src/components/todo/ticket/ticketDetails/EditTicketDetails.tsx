@@ -14,6 +14,7 @@ type EditTicketDetailsProps = {
   description?: string
   expiresAt?: string
   onSuccess?: InlineFormProps['onSuccess']
+  onShowForm?: (status: boolean) => void
 }
 
 export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
@@ -22,6 +23,7 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
   description,
   expiresAt,
   onSuccess,
+  onShowForm,
 }) => {
   const fields = useMemo<InlineFormProps[]>(() => ([
     {
@@ -56,7 +58,7 @@ export const EditTicketDetails:FC<EditTicketDetailsProps> = ({
 
   return (
     <div className="flex flex-col gap-2">
-      {fields.map((field) => <InlineForm key={field.fieldId} {...field} />)}
+      {fields.map((field) => <InlineForm key={field.fieldId} {...field} onShowForm={onShowForm} />)}
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { apiClient } from "@/lib/api/apiClient"
 import { parseDate } from "@/lib/utils/dateUtils"
-import { Ticket } from "@prisma/client"
+import { History, Ticket } from "@prisma/client"
 
 export const getTicket = async (payload: any) => {
   const { data } = await apiClient(undefined, true).get(`/ticket`, {
@@ -45,6 +45,21 @@ export const changeTicketOrders = async (payload: any) => {
 
   try {
     return JSON.parse(data || null) as Ticket[]
+  } catch (error) {
+    throw error
+  }
+}
+
+
+export const getTicketHistories = async (payload: any) => {
+  const { data } = await apiClient(undefined, true).get(`/history/ticket`, {
+    params: {
+      ticketId: payload.id
+    }
+  })
+
+  try {
+    return JSON.parse(data || null) as History[]
   } catch (error) {
     throw error
   }

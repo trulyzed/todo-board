@@ -21,4 +21,5 @@ export type InlineFormProps = {
   onToggle?: (status: boolean) => void
   clickEventHandler?: (event: Event) => void
   canDraft?: boolean
+  onShowForm?: (status: boolean) => void
 }

@@ -24,7 +24,7 @@ export const ExpiryNotifier = () => {
     
     const getAlertableTickets = () => {
       const data = (categories as CategoryWithTickets[]).reduce((a, c) => {
-        a.push(...c.tickets.filter(i => !isExpired(i.expiresAt) && !isAddressed(i.id)))
+        a.push(...(c.tickets || []).filter(i => !isExpired(i.expiresAt) && !isAddressed(i.id)))
         return a
       }, [] as Ticket[])
 

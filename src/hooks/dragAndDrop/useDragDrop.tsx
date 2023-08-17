@@ -21,7 +21,7 @@ export type UseDropArguments = {
 }
 
 export const useDragDrop = ({onDrop, identifier, initiatorContext}: UseDropArguments) => {
-  const { activeDragId, initiatorContext: initiatorContextValue } = useContext(DragDropContext)
+  const { activeDragId, setActiveDragId, setInitiatorContext } = useContext(DragDropContext)
   const [state, setState] = useState<{
     [id: string]: {dragging?: boolean; entered?: boolean}
   }>()
@@ -39,16 +39,16 @@ export const useDragDrop = ({onDrop, identifier, initiatorContext}: UseDropArgum
     event.stopPropagation()
     event.dataTransfer.effectAllowed = 'move'
     event.dataTransfer.setData('text/plain', id)
-    if (activeDragId) activeDragId.current = id
-    if (initiatorContextValue) initiatorContextValue.current = initiatorContext
+    setActiveDragId(id)
+    setInitiatorContext(initiatorContext)
     setState(prevVal => ({
       ...prevVal,
       [id]: {...prevVal?.[id], dragging: true}
     }))
-  }, [activeDragId, initiatorContextValue, initiatorContext])
+  }, [setActiveDragId, initiatorContext, setInitiatorContext])
 
   const dragEndHandler: (id: string) => DraggableAttributes['onDragEnd'] = useCallback((id) => (event) => {
-    if (isValidId(activeDragId?.current || '')) {
+    if (isValidId(activeDragId || '')) {
       setState(prevVal => ({
         ...prevVal,
         [id]: {...prevVal?.[id], dragging: false, entered: false}
@@ -60,7 +60,7 @@ export const useDragDrop = ({onDrop, identifier, initiatorContext}: UseDropArgum
   // Droppable container listeners
   const dragEnterHandler: (id: string) => DroppableAttributes['onDragOver'] = useCallback((id) => (event) => {
     event.stopPropagation()
-    if (isValidId(activeDragId?.current || '')) {
+    if (isValidId(activeDragId || '')) {
       setState(prevVal => ({
         ...prevVal,
         [id]: {...prevVal?.[id], entered: true}
@@ -76,7 +76,7 @@ export const useDragDrop = ({onDrop, identifier, initiatorContext}: UseDropArgum
 
   const dragLeaveHandler: (id: string) => DroppableAttributes['onDragLeave'] = useCallback((id) => (event) => {
     event.stopPropagation()
-    if (isValidId(activeDragId?.current || '')) {
+    if (isValidId(activeDragId || '')) {
       setState(prevVal => ({
         ...prevVal,
         [id]: {...prevVal?.[id], entered: false}
@@ -88,7 +88,7 @@ export const useDragDrop = ({onDrop, identifier, initiatorContext}: UseDropArgum
     event.stopPropagation()
     event.preventDefault()
     const sourceId = event.dataTransfer.getData('text/plain')
-    if (isValidId(activeDragId?.current || '')) {
+    if (isValidId(activeDragId || '')) {
       if (sourceId !== id) onDrop({sourceId: getId(sourceId), targetId: getId(id)})
       setState(undefined)
       return false

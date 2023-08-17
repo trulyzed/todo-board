@@ -24,7 +24,7 @@ export const useForm = (options?: UseFormArguments) => {
     setHasUnsavedValue(false)
   }, [clearAfterSubmit])
 
-  const handleSubmit = useCallback((onSubmit: (data: FormValue | undefined) => Promise<boolean> | void) => async (e: FormEvent) => {
+  const handleSubmit = useCallback((onSubmit: (data: FormValue | undefined) => Promise<boolean | undefined>) => async (e: FormEvent) => {
     e.preventDefault()
     const success = await onSubmit(formValues)
     if (success) handleSubmitSuccess()
