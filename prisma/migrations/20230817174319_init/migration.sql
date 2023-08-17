@@ -102,12 +102,3 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 
 -- CreateIndex
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Board_title_key" ON "Board"("title");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Category_title_key" ON "Category"("title");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Ticket_title_key" ON "Ticket"("title");

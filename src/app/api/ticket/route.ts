@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     title,
   }
   if ((data.title !== undefined) && !data.title) return new Response(getJSONableError("Title is required"), {status: 400})
-
+  
   const category = await prisma.category.findUnique({
     where: {
       board: {
@@ -47,12 +47,14 @@ export async function POST(request: Request) {
   if (!categoryId || !category) return new Response(getJSONableError("Category not found"), {status: 404})
   else if (!title) return new Response("Bad data", {status: 400})
 
+  const ticketCount = await prisma.ticket.count({where: {categoryId}})
 
   const ticket = await prisma.ticket.create({
     data: {
       title,
       categoryId,
-      order: await prisma.ticket.count({where: {categoryId}}) + 1
+      order: ticketCount + 1,
+
     }
   })
   return NextResponse.json(ticket)

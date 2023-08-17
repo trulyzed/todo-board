@@ -66,7 +66,7 @@ export const InlineForm:FC<InlineFormProps> = ({
       onSuccess?.(resp)
       setShowForm(false)
       clearDraft()
-      return true
+      return resp
     } catch (error) {
       
     } finally {

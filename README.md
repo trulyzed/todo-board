@@ -26,7 +26,7 @@ And finally, start the development server:
 npm run dev
 ```
 
-Build version can also be run on the development server:
+An optimized build version can also be run on the development server:
 ```bash
 npm run build
 npm run start
