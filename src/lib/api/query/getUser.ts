@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth"
-import { authConfig } from "@/lib/auth"
+import { authConfig } from "@/lib/auth/auth"
 import { prisma } from "@/lib/database/prisma"
 
 export const getUser = async () => {

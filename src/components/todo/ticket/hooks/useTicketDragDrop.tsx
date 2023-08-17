@@ -11,7 +11,7 @@ type UseTicketDragDropArguments = {
 }
 
 export const useTicketDragDrop = ({categoryId}: UseTicketDragDropArguments) => {
-  const { initiatorContext } = useContext(DragDropContext)
+  const { initiatorContext, activeDragId } = useContext(DragDropContext)
   const { categories, setCategories } = useContext(DataContext)
 
   const handleDragDrop: UseDropArguments['onDrop'] = useCallback(({sourceId, targetId}) => {
@@ -45,11 +45,16 @@ export const useTicketDragDrop = ({categoryId}: UseTicketDragDropArguments) => {
     })
   }, [categoryId, initiatorContext, categories, setCategories])
 
+  const enableDropInTicketList = useCallback(() => {
+    return activeDragId?.startsWith('ticket')
+  }, [activeDragId])
+
   const { dragListeners, dropListeners, getState } = useDragDrop({onDrop: handleDragDrop, identifier: 'ticket', initiatorContext: categoryId})
 
   return {
     dragListeners,
     dropListeners,
-    getState
+    getState,
+    enableDropInTicketList
   }
 }

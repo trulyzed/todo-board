@@ -20,7 +20,7 @@ export const CategoryList:FC<CategoryListProps> = ({
         {...dropListeners(i.id)}
         key={i.id}
         className={`basis-64 shrink-0 grow-0 h-full
-          ${getState(i.id)?.entered ? "border-dotted border-4 border-white bg-zinc-300 m-1" : ""})
+          ${getState(i.id)?.entered ? "border-dotted border-4 border-white" : ""})
         `}>
         <CategoryCard
           {...dragListeners(i.id)}

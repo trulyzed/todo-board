@@ -1,8 +1,7 @@
-import { FC, useContext, useMemo } from "react"
+import { FC, useMemo } from "react"
 import { TicketCard } from "./TicketCard"
 import { Ticket } from "@prisma/client"
 import { useTicketDragDrop } from "./hooks/useTicketDragDrop"
-import { DragDropContext } from "@/context/DragDropProvider"
 
 type TicketListProps = {
   categoryId: string
@@ -14,15 +13,14 @@ export const TicketList: FC<TicketListProps> = ({
   tickets=[],
 }) => {
   const sortedTickets = useMemo(() => tickets.sort((a, b) => (a.order || 0) - (b.order || 0)), [tickets])
-  const { activeDragId } = useContext(DragDropContext)
-  const { dragListeners, dropListeners, getState } = useTicketDragDrop({categoryId})
+  const { dragListeners, dropListeners, getState, enableDropInTicketList } = useTicketDragDrop({categoryId})
 
   return (
     sortedTickets.map((i, index) => (
-      <div key={index} {...!activeDragId?.startsWith('ticket') ? {} : dropListeners(i.id)} className={`py-1 ${getState(i.id)?.entered ? "border-dotted border-4 border-white opacity-40" : ""}`}>
+      <div key={index} {...enableDropInTicketList() ? dropListeners(i.id) : {}} className={`py-1 ${getState(i.id)?.entered ? "border-dotted border-4 border-white opacity-40" : ""}`}>
         <TicketCard
           {...dragListeners(i.id)}
-          className={`${getState(i.id)?.dragging ? "opacity-40 border-dotted border-4 border-white" : ""}`}
+          className={`${getState(i.id)?.dragging ? "opacity-40" : ""}`}
           categoryId={categoryId} id={i.id} title={i.title}
         />
       </div>

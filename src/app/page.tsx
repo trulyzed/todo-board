@@ -9,8 +9,10 @@ import { Category } from "@prisma/client"
 import { HomePageSkeleton } from "@/components/layout/loader/skeletons/HomePageSkeleton"
 import { CategoryList } from "@/components/todo/category/CategoryList"
 import { ExpiryNotifier } from "@/components/todo/ticket/ExpiryNotifier"
+import { useAuthorized } from "@/hooks/useAuthorized"
 
 export default function Page() {
+  useAuthorized()
   const { data, loading } = useQuery<Category[]>({query: getCategories})
   const { setCategories } = useContext(DataContext)
   

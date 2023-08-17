@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth"
 import { SignOut } from "./menu/SignOut"
-import { authConfig } from "@/lib/auth"
+import { authConfig } from "@/lib/auth/auth"
 import { Branding } from "./branding/Branding"
 
 export const Navbar = async () => {
